@@ -1,3 +1,4 @@
+import { useSanitizedFonts } from "@/hooks/useSanitizedFonts";
 import { ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
@@ -15,6 +16,8 @@ const ViewFAQ = ({ section }) => {
     descriptionFontWeight,
     descriptionFontFamily,
     descriptionFontSize,
+    isItalicHeader,
+    isItalicDescription,
   } = section.wrapperStyle;
   const [openItems, setOpenItems] = useState([]);
   const contentRefs = useRef({});
@@ -55,9 +58,11 @@ const ViewFAQ = ({ section }) => {
     }
   }, [variant]);
 
+  const sanitizedContent = useSanitizedFonts(header);
+
   return (
     <div className="relative">
-      {isAddHeader && <div dangerouslySetInnerHTML={{ __html: header }} />}
+      {isAddHeader && <div>{sanitizedContent}</div>}
 
       {variant === "basic" && (
         <div className="flex flex-col p-5 relative ">
@@ -75,13 +80,13 @@ const ViewFAQ = ({ section }) => {
                   <p
                     style={{
                       color: colorTitle,
-                      // fontFamily: fontFamily,
-                      fontFamily: "Fugaz One",
-
+                      fontFamily: fontFamily,
                       fontSize: fontSize,
                       fontWeight,
                     }}
-                    className={`w-full break-all   `}
+                    className={`w-full break-all   ${
+                      isItalicHeader && "italic"
+                    }  `}
                   >
                     {content.title}
                   </p>
@@ -110,7 +115,9 @@ const ViewFAQ = ({ section }) => {
                         fontSize: descriptionFontSize,
                         fontWeight: descriptionFontWeight,
                       }}
-                      className={`w-full break-all    `}
+                      className={`w-full break-all ${
+                        isItalicDescription && "italic"
+                      }   `}
                     >
                       {content.description}
                     </p>
@@ -142,7 +149,9 @@ const ViewFAQ = ({ section }) => {
                       fontSize: fontSize,
                       fontWeight,
                     }}
-                    className={`w-full break-all `}
+                    className={`w-full break-all  ${
+                      isItalicHeader && "italic"
+                    } `}
                   >
                     {content.title}
                   </p>
@@ -171,7 +180,9 @@ const ViewFAQ = ({ section }) => {
                         fontSize: descriptionFontSize,
                         fontWeight: descriptionFontWeight,
                       }}
-                      className={`w-full break-all    `}
+                      className={`w-full break-all   ${
+                        isItalicDescription && "italic"
+                      }   `}
                     >
                       {content.description}
                     </p>

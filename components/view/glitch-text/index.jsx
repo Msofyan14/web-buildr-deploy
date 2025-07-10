@@ -67,10 +67,11 @@ const ViewGlitchText = ({ section }) => {
     enableOnHover,
     speed,
     background,
+    isItalicHeader,
   } = section;
 
   return (
-    <div className={`p-10 flex ${textAlign}`}>
+    <div className={`p-10 ${isItalicHeader && "italic"} flex ${textAlign}`}>
       <GlitchText
         style={{
           fontFamily,

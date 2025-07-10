@@ -1,5 +1,6 @@
 // import useAnimatedVisibility from "@/hooks/useAnimatedVisibility";
 
+import { useSanitizedFonts } from "@/hooks/useSanitizedFonts";
 import { createElement } from "react";
 import * as Icons from "react-icons/fa";
 
@@ -12,14 +13,17 @@ const ViewFeatureHighlights = ({ section }) => {
     fontFamily,
     fontSize,
     textAligment,
+    isItalicHeader,
   } = section.wrapperStyle;
 
   //   const { elementRef, getClassName, duration } =
   //     useAnimatedVisibility(animation);
 
+  const sanitizedContent = useSanitizedFonts(header);
+
   return (
     <div className="relative">
-      {isAddHeader && <div dangerouslySetInnerHTML={{ __html: header }} />}
+      {isAddHeader && <div>{sanitizedContent}</div>}
 
       <div className={`flex ${textAligment}`}>
         <div
@@ -56,7 +60,9 @@ const ViewFeatureHighlights = ({ section }) => {
                         textShadow,
                         fontWeight,
                       }}
-                      className={`w-full break-all   `}
+                      className={`w-full break-all ${
+                        isItalicHeader && "italic"
+                      }  `}
                     >
                       {content.title}
                     </p>
@@ -71,7 +77,9 @@ const ViewFeatureHighlights = ({ section }) => {
                         textShadow,
                         fontWeight,
                       }}
-                      className={`w-full break-all   `}
+                      className={`w-full break-all ${
+                        isItalicHeader && "italic"
+                      }  `}
                     >
                       {content.title}
                     </p>

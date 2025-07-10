@@ -1,6 +1,9 @@
 import { useActionClickTarget } from "@/hooks/useActionClickTarget";
 import React, { useMemo } from "react";
 import Image from "next/image";
+import { useSanitizedFonts } from "@/hooks/useSanitizedFonts";
+import { useGoogleFont } from "@/hooks/useGoogleFont";
+import { cn } from "@/lib/utils";
 
 const ViewContentShowcase = ({ section }) => {
   const { isAddHeader, header, contents } = section;
@@ -19,6 +22,8 @@ const ViewContentShowcase = ({ section }) => {
     descriptionFontFamily,
     descriptionFontSize,
     textAligmentDescription,
+    isItalicHeader,
+    isItalicDescription,
   } = section?.wrapperStyle || {};
 
   const columnClass = useMemo(() => {
@@ -57,9 +62,13 @@ const ViewContentShowcase = ({ section }) => {
 
   const { onActionClickTarget } = useActionClickTarget();
 
+  const sanitizedContent = useSanitizedFonts(header);
+  const selectedFontHeader = useGoogleFont(fontFamily);
+  const selectedFontDesc = useGoogleFont(descriptionFontFamily);
+
   return (
     <div className="relative">
-      {isAddHeader && <div dangerouslySetInnerHTML={{ __html: header }} />}
+      {isAddHeader && <div>{sanitizedContent}</div>}
 
       <div
         className={`relative items-stretch
@@ -107,11 +116,15 @@ const ViewContentShowcase = ({ section }) => {
                 <p
                   style={{
                     color: titleColor,
-                    fontFamily,
                     fontSize,
                     fontWeight,
                   }}
-                  className={`w-full break-all ${textAligment}  `}
+                  className={cn(
+                    "w-full break-all",
+                    isItalicHeader && "italic",
+                    textAligment,
+                    selectedFontHeader.className
+                  )}
                 >
                   {content.title}
                 </p>
@@ -143,11 +156,15 @@ const ViewContentShowcase = ({ section }) => {
                 <p
                   style={{
                     color: descriptionColor,
-                    fontFamily: descriptionFontFamily,
                     fontSize: descriptionFontSize,
                     fontWeight: descriptionFontWeight,
                   }}
-                  className={`w-full break-all ${textAligmentDescription}  `}
+                  className={cn(
+                    "w-full break-all",
+                    isItalicDescription && "italic",
+                    textAligmentDescription,
+                    selectedFontDesc.className
+                  )}
                 >
                   {content.description}
                 </p>

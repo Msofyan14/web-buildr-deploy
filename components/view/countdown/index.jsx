@@ -1,3 +1,4 @@
+import { useSanitizedFonts } from "@/hooks/useSanitizedFonts";
 import DateCountDown from "./DateCountDown";
 import DurationCountdown from "./DurationCountdown";
 // import useAnimatedVisibility from "@/hooks/useAnimatedVisibility";
@@ -8,9 +9,11 @@ const ViewCountDown = ({ section }) => {
   //   const { elementRef, getClassName, duration } =
   //     useAnimatedVisibility(animation);
 
+  const sanitizedContent = useSanitizedFonts(header);
+
   return (
     <div className="relative">
-      {isAddHeader && <div dangerouslySetInnerHTML={{ __html: header }} />}
+      {isAddHeader && <div>{sanitizedContent}</div>}
 
       {contents.map((content) => {
         return (

@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { useSanitizedFonts } from "@/hooks/useSanitizedFonts";
 import Heading from "./Heading";
 import ViewContactInfo from "./ViewContactInfo";
 import ViewGroupLink from "./ViewGroupLink";
@@ -10,10 +10,7 @@ import ViewText from "./ViewText";
 const ViewFooter = ({ section }) => {
   const { contents, copyright, wrapperStyle } = section;
 
-  const useSchemeColor =
-    !!copyright?.copyrightTextColor &&
-    copyright?.copyrightTextColor !== "__INLINE__";
-
+  const sanitized = useSanitizedFonts(copyright.text);
   return (
     <div>
       <div className={`relative `}>
@@ -76,19 +73,7 @@ const ViewFooter = ({ section }) => {
         </div>
 
         <div className="mt-3 border-t p-3">
-          <div
-            className={cn("rich-text break-all", {
-              "with-scheme-color": useSchemeColor,
-            })}
-            style={{
-              ...(useSchemeColor
-                ? { "--richTextColor": copyright?.copyrightTextColor }
-                : {}),
-            }}
-            dangerouslySetInnerHTML={{
-              __html: copyright.text,
-            }}
-          />
+          <div className="break-all">{sanitized}</div>
         </div>
       </div>
     </div>

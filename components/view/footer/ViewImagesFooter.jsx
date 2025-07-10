@@ -1,6 +1,8 @@
 import { useActionClickTarget } from "@/hooks/useActionClickTarget";
 import Image from "next/image";
 
+import {} from "next/font/google";
+
 const ViewImagesFooter = ({ children, content, index }) => {
   const { onActionClickTarget } = useActionClickTarget();
 

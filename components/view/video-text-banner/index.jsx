@@ -1,5 +1,7 @@
 // import useAnimatedVisibility from "@/hooks/useAnimatedVisibility";
 
+import { useSanitizedFonts } from "@/hooks/useSanitizedFonts";
+
 const ViewVideoText = ({ section }) => {
   const { contents, animation, animationText } = section;
 
@@ -18,6 +20,11 @@ const ViewVideoText = ({ section }) => {
       const videoId = urlObj.searchParams.get("v"); // Mendapatkan parameter 'v' dari URL
       return videoId;
     }
+  };
+
+  const SanitizedContent = ({ html }) => {
+    const sanitized = useSanitizedFonts(html);
+    return <>{sanitized}</>;
   };
 
   return (
@@ -68,7 +75,9 @@ const ViewVideoText = ({ section }) => {
               //     "--animation-duration": `${durationContent}s`,
               //   }}
             >
-              <div dangerouslySetInnerHTML={{ __html: content?.textBanner }} />
+              <div>
+                <SanitizedContent html={content.textBanner} />
+              </div>
             </div>
           </div>
         );

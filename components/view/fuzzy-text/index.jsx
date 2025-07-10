@@ -6,6 +6,7 @@ const FuzzyText = ({
   fontWeight = 900,
   fontFamily = "inherit",
   color = "#fff",
+  italic = false,
   enableHover = true,
   baseIntensity = 0.18,
   hoverIntensity = 0.5,
@@ -52,7 +53,9 @@ const FuzzyText = ({
       const offCtx = offscreen.getContext("2d");
       if (!offCtx) return;
 
-      offCtx.font = `${fontWeight} ${fontSizeStr} ${computedFontFamily}`;
+      const fontStyle = italic ? "italic" : "normal";
+
+      offCtx.font = ` ${fontStyle} ${fontWeight}  ${fontSizeStr} ${computedFontFamily}`;
       offCtx.textBaseline = "alphabetic";
       const metrics = offCtx.measureText(text);
 
@@ -72,7 +75,7 @@ const FuzzyText = ({
       offscreen.height = tightHeight;
 
       const xOffset = extraWidthBuffer / 2;
-      offCtx.font = `${fontWeight} ${fontSizeStr} ${computedFontFamily}`;
+      offCtx.font = ` ${fontStyle} ${fontWeight} ${fontSizeStr} ${computedFontFamily}`;
       offCtx.textBaseline = "alphabetic";
       offCtx.fillStyle = color;
       offCtx.fillText(text, xOffset - actualLeft, actualAscent);
@@ -194,6 +197,7 @@ const FuzzyText = ({
     enableHover,
     baseIntensity,
     hoverIntensity,
+    italic,
   ]);
 
   return <canvas ref={canvasRef} />;
@@ -210,7 +214,9 @@ const ViewFuzzyText = ({ section }) => {
     baseIntensity,
     hoverIntensity,
     enableHover,
+    isItalicHeader,
   } = section;
+
   return (
     <div className={`relative p-10 flex ${textAlign}`}>
       <FuzzyText
@@ -221,6 +227,7 @@ const ViewFuzzyText = ({ section }) => {
         fontFamily={fontFamily}
         fontWeight={fontWeight}
         color={colorFuzzyText}
+        italic={isItalicHeader}
       >
         {text}
       </FuzzyText>

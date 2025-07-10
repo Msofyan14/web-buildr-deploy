@@ -119,10 +119,11 @@ const ViewSplitText = ({ section }) => {
     colorSplitText,
     fontSize,
     textAlign,
+    isItalicHeader,
   } = section;
 
   return (
-    <div className={`p-10 ${textAlign} `}>
+    <div className={`p-10 ${textAlign}  ${isItalicHeader && "italic"}`}>
       <SplitText
         style={{
           fontFamily,

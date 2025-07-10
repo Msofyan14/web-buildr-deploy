@@ -164,12 +164,17 @@ const ViewScrollVelocity = ({ section }) => {
     fontSize,
     textAlign,
     velocity,
+    isItalicHeader,
   } = section;
 
   const texts = contents.map((content) => content.title);
 
   return (
-    <div className={`p-10 overflow-x-hidden flex ${textAlign}`}>
+    <div
+      className={`p-10 overflow-x-hidden flex ${
+        isItalicHeader && "italic"
+      } ${textAlign}`}
+    >
       <ScrollVelocity
         texts={texts}
         velocity={velocity}

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useMotionValue, useSpring } from "framer-motion";
 import { useState } from "react";
+import { useSanitizedFonts } from "@/hooks/useSanitizedFonts";
 
 const CountUp = ({
   to,
@@ -148,13 +149,17 @@ const ViewBusinessOverview = ({ section }) => {
     fontFamilyOverview,
     fontWeightOverview,
     colorOverview,
+    isItalicHeader,
+    isItalicOverview,
   } = section.wrapperStyle;
 
   const { isAddHeader, header, contents } = section;
 
+  const sanitizedContent = useSanitizedFonts(header);
+
   return (
     <div className="relative">
-      {isAddHeader && <div dangerouslySetInnerHTML={{ __html: header }} />}
+      {isAddHeader && <div>{sanitizedContent}</div>}
 
       <div
         style={{
@@ -170,7 +175,7 @@ const ViewBusinessOverview = ({ section }) => {
               key={content.id}
               className={`flex flex-col items-center gap-y-1 `}
             >
-              <div className="flex">
+              <div className={`flex ${isItalicHeader && "italic"}`}>
                 <CountUp
                   style={{
                     fontFamily,
@@ -201,7 +206,7 @@ const ViewBusinessOverview = ({ section }) => {
               </div>
 
               <p
-                className="break-all"
+                className={`break-all ${isItalicOverview && "italic"}`}
                 style={{
                   fontFamily: fontFamilyOverview,
                   fontWeight: fontWeightOverview,

@@ -2,6 +2,7 @@
 
 import CustomButton from "@/components/CustomButton";
 import { useActionClickTarget } from "@/hooks/useActionClickTarget";
+import { useSanitizedFonts } from "@/hooks/useSanitizedFonts";
 import Image from "next/image";
 
 const ViewHeroSection = ({ section, buildContainerStyle }) => {
@@ -28,6 +29,11 @@ const ViewHeroSection = ({ section, buildContainerStyle }) => {
   //   } = useAnimatedVisibility(animationText);
 
   const { onActionClickTarget } = useActionClickTarget();
+
+  const SanitizedContent = ({ html }) => {
+    const sanitized = useSanitizedFonts(html);
+    return <>{sanitized}</>;
+  };
 
   return (
     <div>
@@ -77,11 +83,9 @@ const ViewHeroSection = ({ section, buildContainerStyle }) => {
                         //   "--animation-duration": `${durationContent}s`,
                         // }}
                       >
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: content.textBanner,
-                          }}
-                        />
+                        <div>
+                          <SanitizedContent html={content.textBanner} />
+                        </div>
                       </div>
 
                       {withButton && (
@@ -113,11 +117,9 @@ const ViewHeroSection = ({ section, buildContainerStyle }) => {
                         //   "--animation-duration": `${durationContent}s`,
                         // }}
                       >
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: content.textBanner,
-                          }}
-                        />
+                        <div>
+                          <SanitizedContent html={content.textBanner} />
+                        </div>
                       </div>
 
                       {withButton && (
@@ -190,11 +192,9 @@ const ViewHeroSection = ({ section, buildContainerStyle }) => {
                     //   "--animation-duration": `${durationContent}s`,
                     // }}
                   >
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: content.textBanner,
-                      }}
-                    />
+                    <div>
+                      <SanitizedContent html={content.textBanner} />
+                    </div>
                   </div>
 
                   {withButton && (

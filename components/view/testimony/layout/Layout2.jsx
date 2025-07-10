@@ -19,6 +19,8 @@ const Layout2 = ({ content, styles }) => {
     descriptionFontFamily,
     descriptionFontSize,
     textAligment,
+    isItalicHeader,
+    isItalicDescription,
   } = styles;
 
   return (
@@ -54,7 +56,7 @@ const Layout2 = ({ content, styles }) => {
             fontSize,
             fontWeight,
           }}
-          className={`w-full break-all `}
+          className={`w-full break-all ${isItalicHeader && "italic"} `}
         >
           {content.name}
         </p>
@@ -86,7 +88,7 @@ const Layout2 = ({ content, styles }) => {
               fontSize: descriptionFontSize,
               fontWeight: descriptionFontWeight,
             }}
-            className={`w-full break-all`}
+            className={`w-full break-all ${isItalicDescription && "italic"} `}
           >
             {content.description}
           </p>

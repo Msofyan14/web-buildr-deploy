@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import { useSprings, animated } from "@react-spring/web";
+import { useGoogleFont } from "@/hooks/useGoogleFont";
 
 const BlurText = ({
   text = "",
@@ -14,7 +15,10 @@ const BlurText = ({
   easing = "easeOutCubic",
   onAnimationComplete,
   style,
+  fontFamily,
 }) => {
+  const selectedFont = useGoogleFont(fontFamily);
+
   const elements = animateBy === "words" ? text.split(" ") : text.split("");
   const [inView, setInView] = useState(false);
   const ref = useRef();
@@ -97,7 +101,7 @@ const BlurText = ({
   return (
     <p
       ref={ref}
-      className={`blur-text ${className} flex flex-wrap`}
+      className={`blur-text ${className} flex flex-wrap ${selectedFont.className}`}
       style={{
         ...style,
       }}
@@ -127,13 +131,13 @@ const ViewBlurText = ({ section }) => {
     textAlign,
     animateBy,
     direction,
+    isItalicHeader,
   } = section;
 
   return (
-    <div className={`p-10 flex ${textAlign}`}>
+    <div className={`p-10 flex ${isItalicHeader && "italic"} ${textAlign}`}>
       <BlurText
         style={{
-          fontFamily,
           fontWeight,
           color: colorBlurText,
           fontSize,
@@ -142,6 +146,7 @@ const ViewBlurText = ({ section }) => {
         delay={delay}
         animateBy={animateBy}
         direction={direction}
+        fontFamily={fontFamily}
       />
     </div>
   );

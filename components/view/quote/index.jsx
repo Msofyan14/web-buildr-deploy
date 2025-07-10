@@ -1,5 +1,7 @@
 // import useAnimatedVisibility from "@/hooks/useAnimatedVisibility";
 
+import { useSanitizedFonts } from "@/hooks/useSanitizedFonts";
+
 const ViewQuote = ({ section }) => {
   const { contents, animation } = section;
 
@@ -8,6 +10,11 @@ const ViewQuote = ({ section }) => {
   //     getClassName: getClassNameContent,
   //     duration: durationContent,
   //   } = useAnimatedVisibility(animation);
+
+  const SanitizedContent = ({ html }) => {
+    const sanitized = useSanitizedFonts(html);
+    return <>{sanitized}</>;
+  };
 
   return (
     <div>
@@ -33,7 +40,9 @@ const ViewQuote = ({ section }) => {
                 “
               </span>
 
-              <div dangerouslySetInnerHTML={{ __html: quoteText }} />
+              <div>
+                <SanitizedContent html={quoteText} />
+              </div>
 
               <span
                 style={{

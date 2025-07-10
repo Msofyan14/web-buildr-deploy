@@ -26,6 +26,7 @@ const ViewMenuNavbar = ({ content, isMobile, styles }) => {
     fontFamily,
     description,
     menuBgColor,
+    isItalicHeader,
   } = styles || {};
   const { column } = content;
   const columnClass =
@@ -54,7 +55,9 @@ const ViewMenuNavbar = ({ content, isMobile, styles }) => {
                 fontWeight,
                 fontFamily,
               }}
-              className="!no-underline  py-0 text-base font-normal hover:font-semibold flex w-full justify-between "
+              className={`!no-underline  py-0 text-base font-normal hover:font-semibold flex w-full justify-between  ${
+                isItalicHeader && "italic"
+              } `}
               onMouseEnter={() => setIsHover(true)}
               onMouseLeave={() => setIsHover(false)}
             >
@@ -182,7 +185,9 @@ const ListItem = forwardRef(
               ...descriptionStyle,
               color: descriptionStyle.descriptionColor,
             }}
-            className="line-clamp-2 text-sm leading-snug text-muted-foreground"
+            className={`line-clamp-2 text-sm leading-snug text-muted-foreground ${
+              descriptionStyle?.isItalicDescription && "italic"
+            }`}
           >
             {children}
           </p>

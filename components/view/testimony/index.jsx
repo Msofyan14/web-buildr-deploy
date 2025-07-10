@@ -1,3 +1,4 @@
+import { useSanitizedFonts } from "@/hooks/useSanitizedFonts";
 import ContainerSlider from "./ContainerSlider";
 import Layout1 from "./layout/Layout1";
 import Layout2 from "./layout/Layout2";
@@ -8,6 +9,8 @@ const ViewTestimony = ({ section }) => {
   const { contents } = section;
   const { variant, header, withSlider, autoPlaySlider } = section.wrapperStyle;
 
+  const sanitizedContent = useSanitizedFonts(header);
+
   return (
     <div>
       <div className="relative p-5">
@@ -16,7 +19,7 @@ const ViewTestimony = ({ section }) => {
             marginBottom: variant === "2" ? 40 : 20,
           }}
         >
-          <div dangerouslySetInnerHTML={{ __html: header }} />
+          <div>{sanitizedContent}</div>
         </div>
 
         {variant === "1" && (

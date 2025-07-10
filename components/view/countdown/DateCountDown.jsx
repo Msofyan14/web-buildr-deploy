@@ -1,3 +1,4 @@
+import { useSanitizedFonts } from "@/hooks/useSanitizedFonts";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
@@ -12,11 +13,9 @@ const getTimeHours = (time) => ((time % daySeconds) / hourSeconds) | 0;
 const getTimeDays = (time) => (time / daySeconds) | 0;
 
 export const FinishedContent = ({ text }) => {
-  return (
-    <div className={`w-full`}>
-      <div dangerouslySetInnerHTML={{ __html: text }} />
-    </div>
-  );
+  const sanitized = useSanitizedFonts(text);
+
+  return <div className={`w-full break-all`}>{sanitized}</div>;
 };
 
 const DateCountDown = ({ styles, content, finish }) => {

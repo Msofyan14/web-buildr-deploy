@@ -1,4 +1,5 @@
 import { useActionClickTarget } from "@/hooks/useActionClickTarget";
+import { useSanitizedFonts } from "@/hooks/useSanitizedFonts";
 import Image from "next/image";
 import React from "react";
 
@@ -16,9 +17,11 @@ const ViewImage = ({ section }) => {
 
   const { onActionClickTarget } = useActionClickTarget();
 
+  const sanitizedContent = useSanitizedFonts(header);
+
   return (
     <div className="relative">
-      {isAddHeader && <div dangerouslySetInnerHTML={{ __html: header }} />}
+      {isAddHeader && <div>{sanitizedContent}</div>}
       <div
         // ref={elementRef}
         // style={{

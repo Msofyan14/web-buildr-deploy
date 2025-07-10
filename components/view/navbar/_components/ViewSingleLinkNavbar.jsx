@@ -7,7 +7,13 @@ import { darkenRgbaColor } from "@/lib/darkenRgbaColor";
 const ViewSingleLinkNavbar = ({ content, styles }) => {
   const [isHover, setIsHover] = useState(false);
 
-  const { headingColor, headingFontSize, fontWeight, fontFamily } = styles;
+  const {
+    headingColor,
+    headingFontSize,
+    fontWeight,
+    fontFamily,
+    isItalicHeader,
+  } = styles;
 
   const hoverColorConversion = darkenRgbaColor(headingColor, 0.3);
 
@@ -16,7 +22,9 @@ const ViewSingleLinkNavbar = ({ content, styles }) => {
   return (
     <NavigationMenuItem key={content?.id}>
       <div
-        className={`hover:font-semibold   data-[state=open]:font-semibold cursor-pointer`}
+        className={`hover:font-semibold   data-[state=open]:font-semibold cursor-pointer ${
+          isItalicHeader && "italic"
+        }`}
         onClick={() => onActionClickTarget(content?.target)}
         style={{
           color: isHover ? hoverColorConversion : headingColor,
