@@ -1,3 +1,4 @@
+import { useGoogleFont } from "@/hooks/useGoogleFont";
 import { useEffect } from "react";
 import { useState } from "react";
 
@@ -70,11 +71,16 @@ const ViewGlitchText = ({ section }) => {
     isItalicHeader,
   } = section;
 
+  const selectedFontHeader = useGoogleFont(fontFamily);
+
   return (
-    <div className={`p-10 ${isItalicHeader && "italic"} flex ${textAlign}`}>
+    <div
+      className={`p-10 ${isItalicHeader && "italic"} flex ${textAlign} ${
+        selectedFontHeader.className
+      }`}
+    >
       <GlitchText
         style={{
-          fontFamily,
           fontWeight,
           color: colorGlitchText,
           fontSize,

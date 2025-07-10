@@ -1,3 +1,4 @@
+import { useGoogleFont } from "@/hooks/useGoogleFont";
 import { useSanitizedFonts } from "@/hooks/useSanitizedFonts";
 import { ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -22,6 +23,9 @@ const ViewFAQ = ({ section }) => {
   const [openItems, setOpenItems] = useState([]);
   const contentRefs = useRef({});
   const prevVariant = useRef(variant);
+
+  const selectedFontHeader = useGoogleFont(fontFamily);
+  const selectedFontDesc = useGoogleFont(descriptionFontFamily);
 
   const toggleItem = (id) => {
     setOpenItems((prevOpenItems) =>
@@ -80,13 +84,13 @@ const ViewFAQ = ({ section }) => {
                   <p
                     style={{
                       color: colorTitle,
-                      fontFamily: fontFamily,
+
                       fontSize: fontSize,
                       fontWeight,
                     }}
                     className={`w-full break-all   ${
                       isItalicHeader && "italic"
-                    }  `}
+                    }  ${selectedFontHeader.className}  `}
                   >
                     {content.title}
                   </p>
@@ -111,13 +115,13 @@ const ViewFAQ = ({ section }) => {
                     <p
                       style={{
                         color: descriptionColor,
-                        fontFamily: descriptionFontFamily,
+
                         fontSize: descriptionFontSize,
                         fontWeight: descriptionFontWeight,
                       }}
                       className={`w-full break-all ${
                         isItalicDescription && "italic"
-                      }   `}
+                      }  ${selectedFontDesc.className}  `}
                     >
                       {content.description}
                     </p>
@@ -145,13 +149,12 @@ const ViewFAQ = ({ section }) => {
                   <p
                     style={{
                       color: colorTitle,
-                      fontFamily: fontFamily,
                       fontSize: fontSize,
                       fontWeight,
                     }}
-                    className={`w-full break-all  ${
+                    className={`w-full break-all   ${
                       isItalicHeader && "italic"
-                    } `}
+                    }  ${selectedFontHeader.className}  `}
                   >
                     {content.title}
                   </p>
@@ -176,13 +179,12 @@ const ViewFAQ = ({ section }) => {
                     <p
                       style={{
                         color: descriptionColor,
-                        fontFamily: descriptionFontFamily,
                         fontSize: descriptionFontSize,
                         fontWeight: descriptionFontWeight,
                       }}
-                      className={`w-full break-all   ${
+                      className={`w-full break-all ${
                         isItalicDescription && "italic"
-                      }   `}
+                      }  ${selectedFontDesc.className}  `}
                     >
                       {content.description}
                     </p>

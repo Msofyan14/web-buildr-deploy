@@ -1,3 +1,4 @@
+import { useGoogleFont } from "@/hooks/useGoogleFont";
 import { useSprings, animated } from "@react-spring/web";
 import { useEffect, useRef, useState } from "react";
 
@@ -122,11 +123,12 @@ const ViewSplitText = ({ section }) => {
     isItalicHeader,
   } = section;
 
+  const selectedFontHeader = useGoogleFont(fontFamily);
+
   return (
     <div className={`p-10 ${textAlign}  ${isItalicHeader && "italic"}`}>
       <SplitText
         style={{
-          fontFamily,
           fontWeight,
           color: colorSplitText,
           fontSize,
@@ -138,6 +140,7 @@ const ViewSplitText = ({ section }) => {
         easing="easeOutCubic"
         threshold={0.2}
         rootMargin="-50px"
+        className={`${selectedFontHeader.className}`}
       />
     </div>
   );

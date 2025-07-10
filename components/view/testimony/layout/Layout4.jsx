@@ -1,3 +1,4 @@
+import { useGoogleFont } from "@/hooks/useGoogleFont";
 import Image from "next/image";
 import { FaStar } from "react-icons/fa";
 import { ImQuotesLeft } from "react-icons/im";
@@ -22,6 +23,9 @@ const Layout4 = ({ content, styles }) => {
     isItalicHeader,
     isItalicDescription,
   } = styles;
+
+  const selectedFontHeader = useGoogleFont(fontFamily);
+  const selectedFontDesc = useGoogleFont(descriptionFontFamily);
 
   return (
     <div
@@ -52,11 +56,12 @@ const Layout4 = ({ content, styles }) => {
           <p
             style={{
               color: nameColor,
-              fontFamily,
               fontSize,
               fontWeight,
             }}
-            className={`w-full break-all ${isItalicHeader && "italic"} `}
+            className={`w-full break-all ${isItalicHeader && "italic"} ${
+              selectedFontHeader?.className
+            } `}
           >
             {content.name}
           </p>
@@ -74,11 +79,12 @@ const Layout4 = ({ content, styles }) => {
           <p
             style={{
               color: descriptionColor,
-              fontFamily: descriptionFontFamily,
               fontSize: descriptionFontSize,
               fontWeight: descriptionFontWeight,
             }}
-            className={`w-full break-all ${isItalicDescription && "italic"} `}
+            className={`w-full break-all ${isItalicDescription && "italic"} ${
+              selectedFontDesc?.className
+            }`}
           >
             {content.description}
           </p>

@@ -1,3 +1,4 @@
+import { useGoogleFont } from "@/hooks/useGoogleFont";
 import React, { useEffect, useRef } from "react";
 
 const FuzzyText = ({
@@ -217,6 +218,8 @@ const ViewFuzzyText = ({ section }) => {
     isItalicHeader,
   } = section;
 
+  const selectedFontHeader = useGoogleFont(fontFamily);
+
   return (
     <div className={`relative p-10 flex ${textAlign}`}>
       <FuzzyText
@@ -224,7 +227,7 @@ const ViewFuzzyText = ({ section }) => {
         hoverIntensity={hoverIntensity}
         enableHover={enableHover}
         fontSize={fontSize}
-        fontFamily={fontFamily}
+        fontFamily={selectedFontHeader.style.fontFamily}
         fontWeight={fontWeight}
         color={colorFuzzyText}
         italic={isItalicHeader}

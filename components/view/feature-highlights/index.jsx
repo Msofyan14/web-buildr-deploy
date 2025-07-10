@@ -1,5 +1,6 @@
 // import useAnimatedVisibility from "@/hooks/useAnimatedVisibility";
 
+import { useGoogleFont } from "@/hooks/useGoogleFont";
 import { useSanitizedFonts } from "@/hooks/useSanitizedFonts";
 import { createElement } from "react";
 import * as Icons from "react-icons/fa";
@@ -20,6 +21,7 @@ const ViewFeatureHighlights = ({ section }) => {
   //     useAnimatedVisibility(animation);
 
   const sanitizedContent = useSanitizedFonts(header);
+  const selectedFontHeader = useGoogleFont(fontFamily);
 
   return (
     <div className="relative">
@@ -55,14 +57,13 @@ const ViewFeatureHighlights = ({ section }) => {
                     <p
                       style={{
                         color: titleColor,
-                        fontFamily,
                         fontSize,
                         textShadow,
                         fontWeight,
                       }}
                       className={`w-full break-all ${
                         isItalicHeader && "italic"
-                      }  `}
+                      }  ${selectedFontHeader.className}  `}
                     >
                       {content.title}
                     </p>
@@ -72,14 +73,13 @@ const ViewFeatureHighlights = ({ section }) => {
                     <p
                       style={{
                         color: titleColor,
-                        fontFamily,
                         fontSize,
                         textShadow,
                         fontWeight,
                       }}
                       className={`w-full break-all ${
                         isItalicHeader && "italic"
-                      }  `}
+                      }   ${selectedFontHeader.className}  `}
                     >
                       {content.title}
                     </p>

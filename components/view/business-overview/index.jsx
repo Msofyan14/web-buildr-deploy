@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { useMotionValue, useSpring } from "framer-motion";
 import { useState } from "react";
 import { useSanitizedFonts } from "@/hooks/useSanitizedFonts";
+import { useGoogleFont } from "@/hooks/useGoogleFont";
 
 const CountUp = ({
   to,
@@ -156,6 +157,8 @@ const ViewBusinessOverview = ({ section }) => {
   const { isAddHeader, header, contents } = section;
 
   const sanitizedContent = useSanitizedFonts(header);
+  const selectedFontHeader = useGoogleFont(fontFamily);
+  const selectedFontOverview = useGoogleFont(fontFamilyOverview);
 
   return (
     <div className="relative">
@@ -178,7 +181,6 @@ const ViewBusinessOverview = ({ section }) => {
               <div className={`flex ${isItalicHeader && "italic"}`}>
                 <CountUp
                   style={{
-                    fontFamily,
                     fontWeight,
                     color: colorRangeValue,
                     fontSize,
@@ -189,12 +191,12 @@ const ViewBusinessOverview = ({ section }) => {
                   separator={separator}
                   direction={direction}
                   duration={duration}
+                  className={`${selectedFontHeader.className}`}
                 />
 
                 <p
-                  className="mx-1"
+                  className={`mx-1 ${selectedFontHeader.className}`}
                   style={{
-                    fontFamily,
                     fontWeight,
                     color: colorRangeValue,
                     fontSize,
@@ -206,9 +208,10 @@ const ViewBusinessOverview = ({ section }) => {
               </div>
 
               <p
-                className={`break-all ${isItalicOverview && "italic"}`}
+                className={`break-all ${isItalicOverview && "italic"} ${
+                  selectedFontOverview.className
+                }`}
                 style={{
-                  fontFamily: fontFamilyOverview,
                   fontWeight: fontWeightOverview,
                   color: colorOverview,
                   fontSize: fontSizeOverview,

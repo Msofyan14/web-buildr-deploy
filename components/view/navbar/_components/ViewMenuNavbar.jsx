@@ -17,6 +17,7 @@ import { useState } from "react";
 import Heading from "./Heading";
 import { useActionClickTarget } from "@/hooks/useActionClickTarget";
 import { darkenRgbaColor } from "@/lib/darkenRgbaColor";
+import { useGoogleFont } from "@/hooks/useGoogleFont";
 
 const ViewMenuNavbar = ({ content, isMobile, styles }) => {
   const {
@@ -43,6 +44,8 @@ const ViewMenuNavbar = ({ content, isMobile, styles }) => {
 
   const { onActionClickTarget } = useActionClickTarget();
 
+  const selectedFontHeader = useGoogleFont(fontFamily);
+
   return (
     <NavigationMenuItem className="w-full ">
       {isMobile ? (
@@ -53,11 +56,10 @@ const ViewMenuNavbar = ({ content, isMobile, styles }) => {
                 color: isHover ? hoverColorConversion : headingColor,
                 fontSize: headingFontSize,
                 fontWeight,
-                fontFamily,
               }}
               className={`!no-underline  py-0 text-base font-normal hover:font-semibold flex w-full justify-between  ${
                 isItalicHeader && "italic"
-              } `}
+              } ${selectedFontHeader.className} `}
               onMouseEnter={() => setIsHover(true)}
               onMouseLeave={() => setIsHover(false)}
             >
@@ -76,11 +78,11 @@ const ViewMenuNavbar = ({ content, isMobile, styles }) => {
                   onClick={() => onActionClickTarget(opt?.target)}
                   styles={{
                     fontWeight,
-                    fontFamily,
                     color: headingColor,
                   }}
                   descriptionStyle={description}
                   menuBgColor={menuBgColor}
+                  className={`${selectedFontHeader.className}`}
                 >
                   {opt.description}
                 </ListItem>
@@ -95,9 +97,8 @@ const ViewMenuNavbar = ({ content, isMobile, styles }) => {
               color: isHover ? hoverColorConversion : headingColor,
               fontSize: headingFontSize,
               fontWeight,
-              fontFamily,
             }}
-            className=""
+            className={`${selectedFontHeader.className}`}
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
           >
@@ -124,11 +125,11 @@ const ViewMenuNavbar = ({ content, isMobile, styles }) => {
                   onClick={() => onActionClickTarget(opt?.target)}
                   styles={{
                     fontWeight,
-                    fontFamily,
                     color: headingColor,
                   }}
                   descriptionStyle={description}
                   menuBgColor={menuBgColor}
+                  className={`${selectedFontHeader.className}`}
                 >
                   {opt.description}
                 </ListItem>
@@ -149,8 +150,9 @@ const ListItem = forwardRef(
     ref
   ) => {
     const [isHover, setIsHover] = useState(false);
-
     const hoverColorConversion = darkenRgbaColor(menuBgColor, 0.3);
+
+    const selectedFontDesc = useGoogleFont(descriptionStyle.fontFamily);
 
     return (
       <NavigationMenuLink asChild>
@@ -184,10 +186,11 @@ const ListItem = forwardRef(
             style={{
               ...descriptionStyle,
               color: descriptionStyle.descriptionColor,
+              fontFamily: "",
             }}
             className={`line-clamp-2 text-sm leading-snug text-muted-foreground ${
               descriptionStyle?.isItalicDescription && "italic"
-            }`}
+            } ${selectedFontDesc.className}`}
           >
             {children}
           </p>

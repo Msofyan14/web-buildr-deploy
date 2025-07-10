@@ -8,6 +8,7 @@ import {
   useVelocity,
   useAnimationFrame,
 } from "framer-motion";
+import { useGoogleFont } from "@/hooks/useGoogleFont";
 
 function useElementWidth(ref) {
   const [width, setWidth] = useState(0);
@@ -169,6 +170,8 @@ const ViewScrollVelocity = ({ section }) => {
 
   const texts = contents.map((content) => content.title);
 
+  const selectedFontHeader = useGoogleFont(fontFamily);
+
   return (
     <div
       className={`p-10 overflow-x-hidden flex ${
@@ -178,9 +181,8 @@ const ViewScrollVelocity = ({ section }) => {
       <ScrollVelocity
         texts={texts}
         velocity={velocity}
-        className="custom-scroll-text"
+        className={`custom-scroll-text ${selectedFontHeader?.className}`}
         style={{
-          fontFamily,
           fontWeight,
           color: colorVelocity,
           fontSize,
