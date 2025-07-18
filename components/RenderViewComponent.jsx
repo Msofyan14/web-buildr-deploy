@@ -5,7 +5,7 @@ import { ViewComponentProvider } from "./ViewComponentProvider";
 import Watermark from "./Watermark";
 import { viewComponentsRender } from "./view-component-map";
 import WrapperViewComponent from "./WrapperViewComponent";
-import ContainerWrapper from "./view/ContainerWrapper";
+import ContainerWrapper from "./ContainerWrapper";
 import ViewPopup from "./ViewPopup";
 import { generateId } from "@/lib/utils";
 
@@ -24,6 +24,8 @@ const RenderViewComponent = ({ publishData }) => {
     const isPopupComponent = type?.toLowerCase().startsWith("popup-");
 
     const containerWrapper = type === "container-wrapper";
+
+    const isNavbarComponent = type === "navbar";
 
     if (!Component) return null;
 
@@ -50,6 +52,7 @@ const RenderViewComponent = ({ publishData }) => {
             buildContainerStyle={frameGlobalOptions}
             isFloatingComponent={isFloatingComponent}
             isPopupComponent={isPopupComponent}
+            isNavbarComponent={isNavbarComponent}
           />
         )}
       </Fragment>

@@ -1,6 +1,7 @@
 import { useViewport } from "@/hooks/useViewport";
 import { generateId } from "@/lib/utils";
-import WrapperViewComponent from "../WrapperViewComponent";
+import WrapperViewComponent from "./WrapperViewComponent";
+import { WaveShape } from "./WaveShape";
 
 export function convertStyleToReact(styleObj) {
   const newStyle = {};
@@ -79,7 +80,7 @@ const ContainerWrapper = ({
   viewComponentsRender,
 }) => {
   const {
-    padding,
+    shape,
     marginTop,
     marginBottom,
     rounded,
@@ -106,6 +107,8 @@ const ContainerWrapper = ({
     const isFloatingComponent = type?.toLowerCase().startsWith("floating-");
     const isPopupComponent = type?.toLowerCase().startsWith("popup-");
 
+    const isNavbarComponent = type === "navbar";
+
     if (!Component) return null;
 
     return (
@@ -119,6 +122,7 @@ const ContainerWrapper = ({
         buildChildComponents={null}
         isFloatingComponent={isFloatingComponent}
         isPopupComponent={isPopupComponent}
+        isNavbarComponent={isNavbarComponent}
       />
     );
   };
@@ -127,18 +131,44 @@ const ContainerWrapper = ({
     <div
       id={container.customComponent?.scrollTarget?.value}
       style={{
+        borderRadius: rounded,
         paddingBottom: marginBottom,
         paddingTop: marginTop,
+        backgroundColor,
+        position: "relative",
+        maxWidth: isFullWidth ? "100%" : maxWidthPage,
       }}
-      className="w-full overflow-x-hidden"
+      className="w-full   mx-auto "
     >
+      {bgType === "image" ? (
+        <div style={stylesBg.backgroundImgStyle}></div>
+      ) : bgType === "gradients" ? (
+        <div style={stylesBg.gradientStyle}></div>
+      ) : bgType === "pattern" ? (
+        <div style={stylesBg.backgroundPatternStyle}></div>
+      ) : null}
+
+      {bgType === "image" && opacity ? (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundColor: opacity < 0 ? "black" : "white",
+            opacity: Math.abs(stylesBg.calculateOpacity),
+          }}
+        ></div>
+      ) : null}
       <div
+        style={{
+          maxWidth: maxWidthPage,
+          zIndex: 1,
+        }}
         className={`
       relative
       gap-5
       w-full
       max-w-full
-      mx-auto
+      mx-auto  p-5
       ${
         isMobile
           ? "flex flex-col"
@@ -147,33 +177,7 @@ const ContainerWrapper = ({
           : "flex flex-row"
       }
     `}
-        style={{
-          borderRadius: rounded,
-          padding,
-          backgroundColor,
-          position: "relative",
-          maxWidth: isFullWidth ? "100%" : maxWidthPage,
-        }}
       >
-        {bgType === "image" ? (
-          <div style={stylesBg.backgroundImgStyle}></div>
-        ) : bgType === "gradients" ? (
-          <div style={stylesBg.gradientStyle}></div>
-        ) : bgType === "pattern" ? (
-          <div style={stylesBg.backgroundPatternStyle}></div>
-        ) : null}
-
-        {bgType === "image" && opacity ? (
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              backgroundColor: opacity < 0 ? "black" : "white",
-              opacity: Math.abs(stylesBg.calculateOpacity),
-            }}
-          ></div>
-        ) : null}
-
         {container?.components?.map((comp) => {
           const baseStyle = convertStyleToReact(comp.style || {});
           const finalStyle = {
@@ -182,11 +186,7 @@ const ContainerWrapper = ({
           };
 
           return (
-            <div
-              className="overflow-x-hidden "
-              style={finalStyle}
-              key={comp?.attributes?.id}
-            >
+            <div className="" style={finalStyle} key={comp?.attributes?.id}>
               {comp?.components?.map((item) =>
                 renderInnerComponentOnColumn(item)
               )}
@@ -194,6 +194,16 @@ const ContainerWrapper = ({
           );
         })}
       </div>
+
+      {shape?.value && (
+        <WaveShape
+          path={shape?.value}
+          position={shape?.position}
+          flip={shape?.flip}
+          color={shape?.color}
+          height={shape?.height}
+        />
+      )}
     </div>
   );
 };

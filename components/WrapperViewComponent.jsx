@@ -8,6 +8,7 @@ const WrapperViewComponent = ({
   buildContainerStyle,
   isFloatingComponent,
   isPopupComponent,
+  isNavbarComponent,
 }) => {
   const currentGlobalOptions = buildContainerStyle;
 
@@ -27,6 +28,7 @@ const WrapperViewComponent = ({
           targetId={section?.scrollTarget?.value || ""}
           section={section}
           maxWidthPage={maxWidthPage}
+          isNavbarComponent={isNavbarComponent}
         >
           <ViewComponent
             section={section}

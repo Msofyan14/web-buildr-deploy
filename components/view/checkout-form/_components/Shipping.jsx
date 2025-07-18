@@ -155,7 +155,9 @@ const Shipping = ({ styles }) => {
                               key={courier.value}
                               value={courier.value}
                               onSelect={(currentValue) => {
-                                setValue("courier", currentValue);
+                                setValue("courier", currentValue, {
+                                  shouldValidate: true,
+                                });
 
                                 if (currentValue !== field.value) {
                                   setValue("courierPackage", "");
@@ -234,7 +236,9 @@ const Shipping = ({ styles }) => {
                                 key={pkg.value}
                                 value={pkg.value}
                                 onSelect={(currentValue) => {
-                                  setValue("courierPackage", currentValue);
+                                  setValue("courierPackage", currentValue, {
+                                    shouldValidate: true,
+                                  });
                                   setOpenPackage(false);
                                 }}
                               >

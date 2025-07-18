@@ -8,6 +8,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { TfiMenuAlt } from "react-icons/tfi";
 
+import { createElement } from "react";
+import * as Icons from "react-icons/fa";
+
 import {
   Sheet,
   SheetContent,
@@ -21,6 +24,8 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import ViewMenuNavbar from "./_components/ViewMenuNavbar";
 import ViewSingleLinkNavbar from "./_components/ViewSingleLinkNavbar";
+import ViewButtonNavbar from "./_components/ViewButtonNavbar";
+import { cn } from "@/lib/utils";
 
 export const componentsNavbar = [
   {
@@ -61,7 +66,16 @@ export const componentsNavbar = [
 ];
 
 const ViewNavbar = ({ section, maxWidthPage }) => {
-  const { contents, side, logoWidth, wrapperStyle, logo } = section;
+  const {
+    contents,
+    side,
+    type,
+    text,
+    iconHeading,
+    logoWidth,
+    wrapperStyle,
+    logo,
+  } = section;
 
   const [responsiveImage, setResponsiveImage] = useState(section.logoWidth);
   const [isActiveSheet, setIsActiveSheet] = useState(false);
@@ -124,28 +138,67 @@ const ViewNavbar = ({ section, maxWidthPage }) => {
   const renderNavbarItems = () => {
     return (
       <>
-        <div
-          className={` ${isActiveSheet && "border-b"} `}
-          onClick={handleScrollToTop}
-        >
+        {type === "image" ? (
           <div
-            style={{
-              width: responsiveImage,
-              aspectRatio: 2 / 1,
-              position: "relative",
-            }}
+            className={` ${isActiveSheet && "border-b"} `}
+            onClick={handleScrollToTop}
           >
-            <Image
-              src={logo}
-              alt={"logo"}
-              fill
-              className={`object-contain w-auto h-auto`}
-              placeholder="blur"
-              blurDataURL={logo}
-              sizes="(max-width: 768px) 50vw, (max-width: 1200px) 20vw, 10vw"
-            />
+            <div
+              style={{
+                width: responsiveImage,
+                aspectRatio: 2 / 1,
+                position: "relative",
+              }}
+            >
+              <Image
+                src={logo}
+                alt={"logo"}
+                fill
+                className={`object-contain w-auto h-auto`}
+                placeholder="blur"
+                blurDataURL={logo}
+                sizes="(max-width: 768px) 50vw, (max-width: 1200px) 20vw, 10vw"
+              />
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="flex items-center gap-x-3">
+            {iconHeading?.position === "left" ? (
+              <>
+                {iconHeading?.icon?.startsWith("Fa") &&
+                Icons[iconHeading.icon] ? (
+                  <div style={{ color: iconHeading?.color }}>
+                    {createElement(Icons[iconHeading.icon], {
+                      size: iconHeading?.size,
+                    })}
+                  </div>
+                ) : null}
+
+                <div
+                  className="break-all"
+                  dangerouslySetInnerHTML={{ __html: text }}
+                />
+              </>
+            ) : (
+              <>
+                <div
+                  className="break-all"
+                  dangerouslySetInnerHTML={{ __html: text }}
+                />
+
+                {iconHeading?.icon?.startsWith("Fa") &&
+                Icons[iconHeading.icon] ? (
+                  <div style={{ color: iconHeading?.color }}>
+                    {createElement(Icons[iconHeading.icon], {
+                      size: iconHeading?.size,
+                    })}
+                  </div>
+                ) : null}
+              </>
+            )}
+          </div>
+        )}
+
         <div className={`${isMobile === isActiveSheet ? "block" : "hidden"}`}>
           <NavigationMenu>
             <NavigationMenuList
@@ -173,7 +226,23 @@ const ViewNavbar = ({ section, maxWidthPage }) => {
             </NavigationMenuList>
           </NavigationMenu>
         </div>
-        <div className="w-[20px] h-[20px] hidden lg:block"></div>
+        <div
+          className={cn(
+            isActiveSheet
+              ? "block"
+              : isMobile === isActiveSheet
+              ? "flex  items-center gap-x-2"
+              : "hidden"
+          )}
+        >
+          {contents.map((content) => (
+            <div key={content.id} className={cn(isActiveSheet && "mb-2")}>
+              {content.type === "button" && (
+                <ViewButtonNavbar content={content} isMobile={isMobile} />
+              )}
+            </div>
+          ))}
+        </div>
       </>
     );
   };

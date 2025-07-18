@@ -38,17 +38,26 @@ const CustomButton = ({
     icon: "h-9 w-9",
   };
 
-  const hoverColorConversion = darkenRgbaColor(btn.stylesBtn.btnColor, 0.1);
+  const {
+    btnColor,
+    variant,
+    iconBtn,
+    size,
+    shadow,
+    rounded,
+    textColor,
+    title,
+    fontFamily,
+    fontWeight,
+    isItalic,
+  } = btn.stylesBtn || {};
+  const hoverColorConversion = darkenRgbaColor(btnColor, 0.1);
 
-  const variant = btn.stylesBtn.variant;
-  const iconBtn = btn.iconBtn;
+  const sizeClasses = fontSize[size] || fontSize.default;
 
-  const sizeClasses = fontSize[btn.stylesBtn.size] || fontSize.default;
+  const sizeBtnClasses = buttonSize[size] || fontSize.default;
 
-  const sizeBtnClasses = buttonSize[btn.stylesBtn.size] || fontSize.default;
-
-  const iconSizeClasses =
-    iconSizeMap[btn.stylesBtn.size] || iconSizeMap.default;
+  const iconSizeClasses = iconSizeMap[size] || iconSizeMap.default;
 
   const ghostVariant =
     variant === "ghost" && "hover:bg-accent hover:text-accent-foreground";
@@ -56,7 +65,7 @@ const CustomButton = ({
   let btnColorWithHover = "";
 
   if (variant === "default") {
-    btnColorWithHover = isHover ? hoverColorConversion : btn.stylesBtn.btnColor;
+    btnColorWithHover = isHover ? hoverColorConversion : btnColor;
   } else if (variant === "outline") {
     btnColorWithHover = isHover ? hoverColorConversion : "transparent";
   }
@@ -67,10 +76,10 @@ const CustomButton = ({
     btnTextColorWithHover = isHover
       ? bgColorComponent
       : schemeColor
-      ? btn.stylesBtn.btnColor
-      : btn.stylesBtn.textColor;
+      ? btnColor
+      : textColor;
   } else if (variant === "default") {
-    btnTextColorWithHover = btn.stylesBtn.textColor;
+    btnTextColorWithHover = textColor;
   }
 
   return (
@@ -79,15 +88,14 @@ const CustomButton = ({
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
       style={{
-        borderRadius: btn.stylesBtn.rounded,
+        borderRadius: rounded,
         color: btnTextColorWithHover,
-        border:
-          variant === "outline" ? `1px solid ${btn.stylesBtn.btnColor}` : "",
+        border: variant === "outline" ? `1px solid ${btnColor}` : "",
         backgroundColor: btnColorWithHover,
       }}
       className={cx(
         "flex justify-center items-center shadow-sm",
-        btn.stylesBtn.shadow,
+        shadow,
         sizeBtnClasses,
         ghostVariant,
         fullWidth && "w-full  "
@@ -96,7 +104,15 @@ const CustomButton = ({
     >
       {iconBtn?.position === "right" ? (
         <div className="flex justify-center items-center gap-x-2">
-          <span className={`${sizeClasses}`}>{btn.stylesBtn.title}</span>
+          <span
+            style={{
+              fontFamily,
+              fontWeight,
+            }}
+            className={`${sizeClasses} ${isItalic && "italic"}`}
+          >
+            {title}
+          </span>
 
           {iconBtn?.icon?.startsWith("Fa") && Icons[iconBtn.icon] ? (
             <div style={{ color: iconBtn?.color }}>
@@ -116,7 +132,15 @@ const CustomButton = ({
             </div>
           ) : null}
 
-          <span className={`${sizeClasses}`}>{btn.stylesBtn.title}</span>
+          <span
+            style={{
+              fontFamily,
+              fontWeight,
+            }}
+            className={`${sizeClasses} ${isItalic && "italic"}`}
+          >
+            {title}
+          </span>
         </div>
       )}
     </button>

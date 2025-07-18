@@ -75,20 +75,16 @@ const generateCustomFieldSchema = () => {
             return;
           }
 
-          const phoneNumberSchema = z
-            .string()
-            .regex(
-              /^62(8[1-9][0-9]{7,10})$/,
-              "Phone number must start with 62 and contain 10-13 digits"
-            );
+          const phoneNumberSchema = z.string().regex(/^8\d{8,13}$/, {
+            message: "Enter a valid number starting with 8, e.g. 8950000xxxx",
+          });
           const result = phoneNumberSchema.safeParse(data.value);
 
           if (!result.success) {
             ctx.addIssue({
               code: z.ZodIssueCode.custom,
               path: ["value"],
-              message:
-                "Phone number must start with 62 and contain 10-13 digits",
+              message: "Enter a valid number starting with 8, e.g. 8950000xxxx",
             });
           }
         }
@@ -99,12 +95,10 @@ const generateCustomFieldSchema = () => {
 const formSchema = z
   .object({
     name: z.string().min(3, "Name must be at least 3 characters").max(50),
-    phoneNumber: z
-      .string()
-      .regex(
-        /^62(8[1-9][0-9]{7,10})$/,
-        "Phone number must start with 62 and contain 10-13 digits"
-      ),
+    email: z.string().email(),
+    phoneNumber: z.string().regex(/^8\d{8,13}$/, {
+      message: "Enter a valid number starting with 8, e.g. 8950000xxxx",
+    }),
     address: z
       .string()
       .min(8, "Address must be at least 8 characters")
@@ -115,7 +109,9 @@ const formSchema = z
     // nameDropshipper: z.string().optional(),
     // phoneNumberDropshipper: z.string().optional(),
 
-    paymentMethod: z.enum(["bankTransfer", "cod"]),
+    paymentMethod: z.enum(["bankTransfer", "cod", "e-payment"], {
+      message: "Requred Payment Method",
+    }),
     bank: z.any().optional(),
     courier: z.string().min(1, { message: "Required" }),
     courierPackage: z.string().min(1, { message: "Required" }),
@@ -151,7 +147,6 @@ import { useEffect, useState } from "react";
 import { createElement } from "react";
 import * as Icons from "react-icons/fa";
 import CustomLabelField from "./_components/CustomLabelField";
-import PaymentMethod from "./_components/PaymentMethod";
 import Shipping from "./_components/Shipping";
 import ViewCheckbox from "./_components/ViewCheckbox";
 import ViewDate from "./_components/ViewDate";
@@ -163,11 +158,11 @@ import ViewInput from "./_components/ViewInput";
 import ViewTextArea from "./_components/ViewTextArea";
 import ViewTitle from "./_components/ViewTitle";
 import ViewRating from "./_components/ViewtRating";
+import PaymentMethod from "./_components/payment-method";
 
 const ViewFormCheckout = ({ section }) => {
-  const { contents } = section;
+  const { contents, submitEvent } = section;
   const {
-    width,
     titleColor,
     titleSize,
     labelSize,
@@ -185,6 +180,7 @@ const ViewFormCheckout = ({ section }) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
+      email: "",
       phoneNumber: "",
       address: "",
       city: "",
@@ -192,7 +188,7 @@ const ViewFormCheckout = ({ section }) => {
       isDropshipping: false,
       nameDropshipper: "",
       phoneNumberDropshipper: false,
-      paymentMethod: "bankTransfer",
+      paymentMethod: "",
       bank: {},
       courier: "",
       courierPackage: "",
@@ -208,60 +204,38 @@ const ViewFormCheckout = ({ section }) => {
     }
   }, [contents, form, form.setValue]);
 
-  const onSubmit = (data) => {};
+  const onSubmit = (data) => {
+    const {
+      event,
+      waNumber,
+      waChatTemplate,
+      customUrl,
+      contentTemplateCOD,
+      contentTemplateBankTransfer,
+      contentTemplateEpayment,
+    } = submitEvent;
+
+    const selectedChatTempate =
+      data?.paymentMethod === "cod"
+        ? contentTemplateCOD
+        : data?.paymentMethod === "bankTransfer"
+        ? contentTemplateBankTransfer
+        : contentTemplateEpayment;
+
+    if (event === "whatsapp_custom_number" && waNumber) {
+      const waLink = `https://wa.me/+62${waNumber}?text=${encodeURIComponent(
+        waChatTemplate
+      )}`;
+      window.open(waLink, "_blank", "noopener noreferrer");
+    } else if (event === "custom_url" && customUrl) {
+      window.open(customUrl, "_blank", "noopener noreferrer");
+    } else if (event === "instruction_page") {
+      return;
+    }
+  };
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
-  // const [data, setData] = useState([]);
-  // const [error, setError] = useState(null);
-  // const [isLoading, setIsLoading] = useState(true); // Tambahkan state loading
-
-  // const fetchData = async (url) => {
-  //   try {
-  //     const response = await fetch(url);
-  //     if (!response.ok) {
-  //       throw new Error(`HTTP error! status: ${response.status}`);
-  //     }
-  //     const data = await response.json();
-  //     return data;
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //     throw error;
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     setIsLoading(true); // Set loading menjadi true saat fetch dimulai
-  //     try {
-  //       const result = await fetchData("http://192.168.1.8:3000/subdistricts");
-  //       setData(result.data);
-  //     } catch (error) {
-  //       setError(error);
-  //     } finally {
-  //       setIsLoading(false); // Set loading menjadi false setelah fetch selesai (baik sukses atau gagal)
-  //     }
-  //   };
-  //   getData();
-  // }, []);
-
-  // let cityList = null;
-  // if (Array.isArray(data)) {
-  //   cityList = data?.map((item) => ({
-  //     value: item.id.toString(),
-  //     label: `${item.name} - ${item.City?.name}, ${item.City?.Province?.name}`,
-  //   }));
-  // } else {
-  //   console.log("data is not an array, data type is: ", typeof data);
-  // }
-
-  // if (isLoading) {
-  //   return <div>Loading...</div>; // Tampilkan pesan loading
-  // }
-
-  // if (error) {
-  //   return <div>Error: {error.message}</div>; // Tampilkan pesan error
-  // }
 
   return (
     <div>
@@ -294,6 +268,36 @@ const ViewFormCheckout = ({ section }) => {
                     }}
                     className="placeholder:text-neutral-300"
                     placeholder="John"
+                    {...field}
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <CustomLabelField
+                  label="Email"
+                  size={labelSize}
+                  color={labelColor}
+                />
+                <FormControl>
+                  <Input
+                    style={{
+                      border: `1px solid ${borderColor}`,
+                      backgroundColor: inputColor,
+                      fontSize: inputSize ? inputSize : "",
+                      color: textInputColor,
+                      borderRadius: rounded,
+                    }}
+                    className="placeholder:text-neutral-300"
+                    placeholder="John@gmail.com"
                     {...field}
                   />
                 </FormControl>
@@ -363,71 +367,6 @@ const ViewFormCheckout = ({ section }) => {
               </FormItem>
             )}
           />
-
-          {/* <FormField
-            control={form.control}
-            name="city"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel className="mt-2">Kota / Kecamatan</FormLabel>
-                <FormControl>
-                  <Popover open={open} onOpenChange={setOpen}>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        aria-expanded={open}
-                        className="w-[300px] justify-between" // Lebihkan lebar tombol
-                      >
-                        {value
-                          ? cityList.find((city) => city.value === value)?.label
-                          : "Pilih Kota / Kecamatan..."}
-                        <ChevronsUpDown className="opacity-50" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-[300px] p-0">
-                      <Command>
-                        <CommandInput
-                          placeholder="Cari Kota / Kecamatan..."
-                          className="h-9"
-                        />
-                        <CommandList>
-                          <CommandEmpty>
-                            Kota / Kecamatan tidak ditemukan.
-                          </CommandEmpty>
-                          <CommandGroup>
-                            {cityList?.map((city) => (
-                              <CommandItem
-                                key={city.value}
-                                value={city.value}
-                                onSelect={(currentValue) => {
-                                  setValue(
-                                    currentValue === value ? "" : currentValue
-                                  );
-                                  setOpen(false);
-                                }}
-                              >
-                                {city.label}
-                                <Check
-                                  className={cn(
-                                    "ml-auto",
-                                    value === city.value
-                                      ? "opacity-100"
-                                      : "opacity-0"
-                                  )}
-                                />
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
 
           <FormField
             control={form.control}
@@ -563,7 +502,10 @@ const ViewFormCheckout = ({ section }) => {
             })}
 
           <Shipping styles={section.wrapperStyle} />
-          <PaymentMethod styles={section.wrapperStyle} width={width} />
+          <PaymentMethod
+            paymentMethod={section?.paymentMethod}
+            styles={section.wrapperStyle}
+          />
 
           <Button
             size="lg"

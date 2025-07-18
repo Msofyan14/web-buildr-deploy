@@ -12,41 +12,20 @@ const publishData = {
             stylable: "",
             highlightable: false,
             hoverable: false,
+            attributes: {
+              id: "ipce",
+            },
             components: [
-              {
-                type: "text-element",
-                draggable: false,
-                attributes: {
-                  id: "iltyu",
-                },
-                customComponent: {
-                  contents: [
-                    {
-                      id: "text-uj28xb5il",
-                      textShadow: null,
-                      shadowColor: "",
-                      text: '<p><span style="font-family: Raleway; font-size: clamp(2.25rem, 5vw, 3rem); color: rgb(0, 0, 0)"><strong><em>The quick brown fox jumps over the lazy dog</em></strong></span></p><p><span style="font-family: Raleway; font-size: clamp(2.25rem, 5vw, 3rem); color: rgb(0, 0, 0)"><strong><em>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nobis numquam expedita molestiae accusamus, adipisci magnam. Cupiditate, autem dolore! Libero nisi harum assumenda molestiae officia blanditiis reprehenderit hic dolore iste inventore!</em></strong></span></p>',
-                      textColor: "",
-                      rotation: 0,
-                      alignText: "justify-center",
-                    },
-                  ],
-                  typeSuggestion: "heading",
-                  textPrompt: "",
-                  smartTextSuggestions: [],
-                },
-                isFromAI: false,
-              },
               {
                 type: "navbar",
                 draggable: false,
                 attributes: {
-                  id: "imahu",
+                  id: "iatl",
                 },
                 customComponent: {
                   contents: [
                     {
-                      id: "single-link-l4am73npx",
+                      id: "single-link-csb1uz4rr",
                       type: "single-link",
                       label: "Single Link",
                       icon: {
@@ -71,7 +50,7 @@ const publishData = {
                       },
                     },
                     {
-                      id: "menu-link-qimq62bqc",
+                      id: "menu-link-7tjzlgzb1",
                       type: "menu-link",
                       label: "Menu Link",
                       icon: {
@@ -83,11 +62,10 @@ const publishData = {
                       },
                       options: [
                         {
-                          label: "Alert Dialog",
-                          href: "/docs/primitives/alert-dialog",
+                          label: "Product A",
                           description:
-                            "A modal dialog that interrupts the user with important content and expects a response.",
-                          id: "menu-0-cw1bs8cka",
+                            "Our flagship product, designed for unparalleled performance and user experience.",
+                          id: "menu-0-kup9beb46",
                           target: {
                             actionType: "link",
                             options: {
@@ -96,11 +74,10 @@ const publishData = {
                           },
                         },
                         {
-                          label: "Hover Card",
-                          href: "/docs/primitives/hover-card",
+                          label: "Product B",
                           description:
-                            "For sighted users to preview content available behind a link.",
-                          id: "menu-1-l9r50flx8",
+                            "A versatile solution tailored for small businesses and startups.",
+                          id: "menu-1-45nyx3ln2",
                           target: {
                             actionType: "link",
                             options: {
@@ -109,11 +86,10 @@ const publishData = {
                           },
                         },
                         {
-                          label: "Progress",
-                          href: "/docs/primitives/progress",
+                          label: "Product C",
                           description:
-                            "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
-                          id: "menu-2-zqrfqiezg",
+                            "An advanced enterprise-grade platform with robust features and scalability.",
+                          id: "menu-2-mfyqfxjch",
                           target: {
                             actionType: "link",
                             options: {
@@ -122,11 +98,10 @@ const publishData = {
                           },
                         },
                         {
-                          label: "Scroll-area",
-                          href: "/docs/primitives/scroll-area",
+                          label: "Product D",
                           description:
-                            "Visually or semantically separates content.",
-                          id: "menu-3-11279c9pg",
+                            "An innovative tool for creative professionals, enhancing productivity and artistic expression.",
+                          id: "menu-3-0hbb7jtyv",
                           target: {
                             actionType: "link",
                             options: {
@@ -135,11 +110,10 @@ const publishData = {
                           },
                         },
                         {
-                          label: "Tabs",
-                          href: "/docs/primitives/tabs",
+                          label: "Product E",
                           description:
-                            "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-                          id: "menu-4-sm80580s5",
+                            "A specialized service offering bespoke solutions for unique industry challenges.",
+                          id: "menu-4-wc271a1vh",
                           target: {
                             actionType: "link",
                             options: {
@@ -148,11 +122,10 @@ const publishData = {
                           },
                         },
                         {
-                          label: "Tooltip",
-                          href: "/docs/primitives/tooltip",
+                          label: "Product F",
                           description:
-                            "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-                          id: "menu-5-amwom2mde",
+                            "Our newest offering, combining cutting-edge technology with intuitive design for everyday users.",
+                          id: "menu-5-nnykzvnit",
                           target: {
                             actionType: "link",
                             options: {
@@ -171,7 +144,7 @@ const publishData = {
                       },
                     },
                     {
-                      id: "menu-link-02-gnhshn6sm",
+                      id: "menu-link-02-8uqbdz5wk",
                       type: "menu-link",
                       label: "Menu Link",
                       icon: {
@@ -183,10 +156,9 @@ const publishData = {
                       },
                       options: [
                         {
-                          label: "Alert Dialog",
-                          href: "/docs/primitives/alert-dialog",
+                          label: "Product A",
                           description: "",
-                          id: "menu-0-h1psc971b",
+                          id: "menu-0-k4l0yqt56",
                           target: {
                             actionType: "link",
                             options: {
@@ -195,10 +167,9 @@ const publishData = {
                           },
                         },
                         {
-                          label: "Hover Card",
-                          href: "/docs/primitives/hover-card",
+                          label: "Product B",
                           description: "",
-                          id: "menu-1-l0262paa0",
+                          id: "menu-1-pf8lfn32y",
                           target: {
                             actionType: "link",
                             options: {
@@ -207,10 +178,9 @@ const publishData = {
                           },
                         },
                         {
-                          label: "Progress",
-                          href: "/docs/primitives/progress",
+                          label: "Product C",
                           description: "",
-                          id: "menu-2-mqyp5vrdv",
+                          id: "menu-2-3uc58jgjk",
                           target: {
                             actionType: "link",
                             options: {
@@ -219,10 +189,9 @@ const publishData = {
                           },
                         },
                         {
-                          label: "Scroll-area",
-                          href: "/docs/primitives/scroll-area",
+                          label: "Product D",
                           description: "",
-                          id: "menu-3-0tdvsiw4z",
+                          id: "menu-3-ams9pfa8n",
                           target: {
                             actionType: "link",
                             options: {
@@ -231,10 +200,9 @@ const publishData = {
                           },
                         },
                         {
-                          label: "Tabs",
-                          href: "/docs/primitives/tabs",
+                          label: "Product E",
                           description: "",
-                          id: "menu-4-jtzlw1orm",
+                          id: "menu-4-jktx8rqyk",
                           target: {
                             actionType: "link",
                             options: {
@@ -243,10 +211,9 @@ const publishData = {
                           },
                         },
                         {
-                          label: "Tooltip",
-                          href: "/docs/primitives/tooltip",
+                          label: "Product F",
                           description: "",
-                          id: "menu-5-zuktd7t18",
+                          id: "menu-5-etnidzifl",
                           target: {
                             actionType: "link",
                             options: {
@@ -266,36 +233,39 @@ const publishData = {
                     },
                   ],
                   wrapperStyle: {
+                    position: "relative",
                     headingColor: "",
                     headingFontSize: "clamp(1rem, 1.5vw, 1.125rem)",
-                    fontWeight: 900,
-                    fontFamily: "Roboto",
-                    isItalicHeader: true,
+                    fontWeight: "",
+                    fontFamily: "",
+                    isItalicHeader: false,
                     description: {
                       descriptionColor: "",
-                      fontWeight: 900,
-                      fontFamily: "Roboto",
-                      isItalicDescription: true,
+                      fontWeight: "",
+                      fontFamily: "",
+                      isItalicDescription: false,
                     },
                     menuBgColor: "",
                     bgColorSidebar: "",
                   },
                   background: {
-                    bgType: null,
-                    bgColor: "",
-                    bgImage: "",
-                    blur: 0,
-                    opacity: 0,
-                    padding: 0,
+                    rounded: 0,
                     marginTop: 0,
                     marginBottom: 0,
-                    direction: "to right",
-                    fromColor: "",
-                    toColor: "",
-                    isRevert: false,
-                    pattern: "",
-                    rounded: 0,
                     isFullWidth: true,
+                    shape: {
+                      value: "M0,320L1440,160L1440,320L0,320Z",
+                    },
+                    bgType: "bgColor",
+                    bgColor: "#3f51b5",
+                  },
+                  type: "image",
+                  text: "Your Brand",
+                  iconHeading: {
+                    icon: "",
+                    color: "",
+                    size: 24,
+                    position: "right",
                   },
                   logo: "https://ik.imagekit.io/ez1ffaf6o/default-images/plg-logo.png?updatedAt=1747224274623",
                   logoWidth: 150,
@@ -304,250 +274,16 @@ const publishData = {
                 isFromAI: false,
               },
               {
-                type: "split-text",
-                draggable: false,
-                attributes: {
-                  id: "iszw",
-                },
-                customComponent: {
-                  isLocked: false,
-                  text: "Hello World!",
-                  fontFamily: "Roboto",
-                  fontWeight: 900,
-                  colorSplitText: "rgba(0, 0, 0, 1)",
-                  delay: 150,
-                  textAlign: "text-center",
-                  fontSize: "clamp(1.125rem, 2vw, 1.25rem)",
-                  contents: [],
-                  isItalicHeader: true,
-                  background: {
-                    bgType: null,
-                    bgColor: "",
-                    bgImage: "",
-                    blur: 0,
-                    opacity: 0,
-                    padding: 0,
-                    marginTop: 0,
-                    marginBottom: 0,
-                    direction: "to right",
-                    fromColor: "",
-                    toColor: "",
-                    isRevert: false,
-                    pattern: "",
-                    rounded: 0,
-                    isFullWidth: false,
-                  },
-                },
-                isFromAI: false,
-              },
-              {
-                type: "button-element",
-                draggable: false,
-                attributes: {
-                  id: "iw1nk",
-                },
-                customComponent: {
-                  isLocked: false,
-                  buttons: [
-                    {
-                      id: "button-01",
-                      stylesBtn: {
-                        title: "Get Started",
-                        btnColor: "rgba(74,144,226,100)",
-                        textColor: "rgba(255,255,255,100)",
-                        size: "default",
-                        variant: "default",
-                        rounded: 10,
-                        shadow: "",
-                      },
-                      iconBtn: {
-                        icon: "",
-                        color: "",
-                        size: 24,
-                        position: "right",
-                      },
-                      target: {
-                        actionType: "link",
-                        options: {
-                          type: null,
-                        },
-                      },
-                    },
-                  ],
-                  mainStyle: {
-                    space: 20,
-                    position: "flex-row",
-                    align: "justify-center",
-                    shadow: "shadow",
-                  },
-                },
-                isFromAI: false,
-              },
-              {
-                type: "faq",
-                draggable: false,
-                attributes: {
-                  id: "i5376",
-                },
-                customComponent: {
-                  contents: [
-                    {
-                      id: "faq-01",
-                      title: "Berapa lama waktu pengiriman?",
-                      description:
-                        "Waktu pengiriman berkisar antara 1-3 hari kerja, tergantung pada lokasi tujuan.",
-                    },
-                    {
-                      id: "faq-02",
-                      title: "Apakah ada biaya pengiriman?",
-                      description:
-                        "Gratis ongkos kirim untuk semua pesanan di atas Rp 200.000 ke seluruh Indonesia.",
-                    },
-                    {
-                      id: "faq-03",
-                      title: "Bagaimana jika barang rusak saat diterima?",
-                      description:
-                        "Segera hubungi tim kami dalam 24 jam dengan melampirkan foto barang rusak untuk proses pengembalian atau penggantian.",
-                    },
-                    {
-                      id: "faq-04",
-                      title: "Apakah bisa melakukan pengembalian barang?",
-                      description:
-                        "Ya, Anda dapat mengembalikan barang dalam kondisi belum digunakan dalam waktu 7 hari setelah penerimaan.",
-                    },
-                  ],
-                  wrapperStyle: {
-                    variant: "basic",
-                    colorTitle: "",
-                    fontWeight: 900,
-                    fontFamily: "Roboto",
-                    fontSize: "clamp(1rem, 1.5vw, 1.125rem)",
-                    textAligment: "justify-center",
-                    borderColor: "rgba(115, 115, 115, 0.5)",
-                    iconColor: "rgb(46, 30, 24,1)",
-                    isItalicHeader: true,
-                    descriptionColor: "rgba(255,205,210,1)",
-                    descriptionFontWeight: 900,
-                    descriptionFontFamily: "Playfair Display",
-                    descriptionFontSize: "clamp(0.875rem, 1.2vw, 1rem)",
-                    isItalicDescription: true,
-                  },
-                  background: {
-                    bgType: null,
-                    bgColor: "",
-                    bgImage: "",
-                    blur: 0,
-                    opacity: 0,
-                    padding: 0,
-                    marginTop: 0,
-                    marginBottom: 0,
-                    direction: "to right",
-                    fromColor: "",
-                    toColor: "",
-                    isRevert: false,
-                    pattern: "",
-                    rounded: 0,
-                    isFullWidth: false,
-                  },
-                },
-                isFromAI: false,
-              },
-              {
-                type: "feature-highlights",
-                draggable: false,
-                attributes: {
-                  id: "ij8mg",
-                },
-                customComponent: {
-                  contents: [
-                    {
-                      id: "feature-01",
-                      title: "Rasakan Bedanya dalam Satu Sentuhan!",
-                      iconBtn: {
-                        icon: "FaCheckCircle",
-                        color: "rgba(126,211,33,1)",
-                        size: 24,
-                        position: "left",
-                      },
-                    },
-                    {
-                      id: "feature-02",
-                      title: "Inovasi Terbaru untuk Keseharian Anda.",
-                      iconBtn: {
-                        icon: "FaCheckCircle",
-                        color: "rgba(126,211,33,1)",
-                        size: 24,
-                        position: "left",
-                      },
-                    },
-                    {
-                      id: "feature-03",
-                      title: "Solusi Cerdas untuk Hidup Lebih Nyaman.",
-                      iconBtn: {
-                        icon: "FaCheckCircle",
-                        color: "rgba(126,211,33,1)",
-                        size: 24,
-                        position: "left",
-                      },
-                    },
-                    {
-                      id: "feature-04",
-                      title: "Transformasi Mudah, Hasil Maksimal.",
-                      iconBtn: {
-                        icon: "FaCheckCircle",
-                        color: "rgba(126,211,33,1)",
-                        size: 24,
-                        position: "left",
-                      },
-                    },
-                  ],
-                  wrapperStyle: {
-                    space: 20,
-                    textShadow: null,
-                    titleColor: "",
-                    fontWeight: 700,
-                    fontFamily: "Roboto",
-                    fontSize: "clamp(1rem, 1.5vw, 1.125rem)",
-                    textAligment: "justify-center",
-                    isItalicHeader: false,
-                  },
-                  background: {
-                    bgType: null,
-                    bgColor: "",
-                    bgImage: "",
-                    blur: 0,
-                    opacity: 0,
-                    padding: 0,
-                    marginTop: 0,
-                    marginBottom: 0,
-                    direction: "to right",
-                    fromColor: "",
-                    toColor: "",
-                    isRevert: false,
-                    pattern: "",
-                    rounded: 0,
-                    isFullWidth: false,
-                  },
-                  animation: {
-                    type: null,
-                    duration: 1,
-                    delay: null,
-                    isReplay: false,
-                  },
-                },
-                isFromAI: false,
-              },
-              {
                 type: "blur-text",
                 draggable: false,
                 attributes: {
-                  id: "iq2n",
+                  id: "idax",
                 },
                 customComponent: {
                   isLocked: false,
                   text: "Isn't this so cool?!",
-                  fontFamily: "Open Sans",
-                  fontWeight: 800,
+                  fontFamily: "Roboto",
+                  fontWeight: 500,
                   colorBlurText: "rgba(0, 0, 0, 1)",
                   delay: 200,
                   textAlign: "justify-center",
@@ -555,400 +291,92 @@ const publishData = {
                   animateBy: "words",
                   direction: "top",
                   contents: [],
-                  isItalicHeader: true,
-                  background: {
-                    bgType: null,
-                    bgColor: "",
-                    bgImage: "",
-                    blur: 0,
-                    opacity: 0,
-                    padding: 0,
-                    marginTop: 0,
-                    marginBottom: 0,
-                    direction: "to right",
-                    fromColor: "",
-                    toColor: "",
-                    isRevert: false,
-                    pattern: "",
-                    rounded: 0,
-                    isFullWidth: false,
-                  },
-                },
-                isFromAI: false,
-              },
-              {
-                type: "business-overview",
-                draggable: false,
-                attributes: {
-                  id: "ijgdb",
-                },
-                customComponent: {
-                  isLocked: false,
-                  contents: [
-                    {
-                      id: "7kabhqhdi",
-                      overview: "Products",
-                      from: 0,
-                      rangeValue: 100,
-                      symbol: "+",
-                    },
-                    {
-                      id: "v3ra4p74s",
-                      overview: "Monthly Orders",
-                      from: 0,
-                      rangeValue: 2500,
-                      symbol: "+",
-                    },
-                    {
-                      id: "lnj3fljmj",
-                      overview: "Happy Customer",
-                      from: 0,
-                      rangeValue: 100,
-                      symbol: "%",
-                    },
-                  ],
-                  wrapperStyle: {
-                    separator: ",",
-                    direction: "up",
-                    duration: 1,
-                    colorRangeValue: "rgba(0, 0, 0, 1)",
-                    textAligment: "justify-center",
-                    fontSize: 36,
-                    fontFamily: "Roboto",
-                    fontWeight: 500,
-                    textShadow: null,
-                    distance: 100,
-                    isItalicHeader: true,
-                    fontSizeOverview: 16,
-                    fontFamilyOverview: "Roboto",
-                    fontWeightOverview: 500,
-                    colorOverview: "rgba(0, 0, 0, 1)",
-                    isItalicOverview: true,
-                  },
-                  background: {
-                    bgType: null,
-                    bgColor: "",
-                    bgImage: "",
-                    blur: 0,
-                    opacity: 0,
-                    padding: 0,
-                    marginTop: 0,
-                    marginBottom: 0,
-                    direction: "to right",
-                    fromColor: "",
-                    toColor: "",
-                    isRevert: false,
-                    pattern: "",
-                    rounded: 0,
-                    isFullWidth: false,
-                  },
-                },
-                isFromAI: false,
-              },
-              {
-                type: "testimony",
-                draggable: false,
-                attributes: {
-                  id: "i50dj",
-                },
-                customComponent: {
-                  contents: [
-                    {
-                      id: "testimony-01",
-                      image:
-                        "https://ik.imagekit.io/ez1ffaf6o/default-images/avatar3.jpg?updatedAt=1747122493693",
-                      name: "John",
-                      profetion: "Designer",
-                      description:
-                        "Waktu pengiriman berkisar antara 1-3 hari kerja, tergantung pada lokasi tujuan.",
-                      stars: 3,
-                    },
-                    {
-                      id: "testimony-02",
-                      image:
-                        "https://ik.imagekit.io/ez1ffaf6o/default-images/avatar2.jpg?updatedAt=1747122493339",
-                      name: "Emily",
-                      profetion: "Developer",
-                      description:
-                        "Produk berkualitas dan layanan pelanggan yang sangat responsif!",
-                      stars: 4,
-                    },
-                    {
-                      id: "testimony-03",
-                      image:
-                        "https://ik.imagekit.io/ez1ffaf6o/default-images/avatar1.jpg?updatedAt=1747122493302",
-                      name: "Michael",
-                      profetion: "Entrepreneur",
-                      description:
-                        "Sangat puas dengan pengalaman belanja di sini, akan kembali lagi!",
-                      stars: 5,
-                    },
-                    {
-                      id: "testimony-04",
-                      image:
-                        "https://ik.imagekit.io/ez1ffaf6o/default-images/avatar4.jpg?updatedAt=1747122493268",
-                      name: "Sophia",
-                      profetion: "Marketing ",
-                      description:
-                        "Pengiriman cepat dan barang sesuai dengan deskripsi. Sangat direkomendasikan!",
-                      stars: 5,
-                    },
-                    {
-                      id: "testimony-05",
-                      image:
-                        "https://ik.imagekit.io/ez1ffaf6o/default-images/avatar6.jpg?updatedAt=1747122493203",
-                      name: "Elena",
-                      profetion: "Freelance",
-                      description:
-                        "Saya sangat puas dengan produk ini! Kualitasnya luar biasa dan sesuai dengan ekspektasi saya. Pengiriman juga cepat dan pelayanannya ramah.",
-                      stars: 5,
-                    },
-                  ],
-                  wrapperStyle: {
-                    variant: "1",
-                    nameColor: "",
-                    fontWeight: 900,
-                    fontFamily: "Lato",
-                    fontSize: 18,
-                    textAligment: "text-center",
-                    borderColor: "rgba(223, 221, 221, 1)",
-                    cardColor: "transparent",
-                    quoteColor: "rgba(245, 245, 245, 1)",
-                    profectionColor: "rgba(148, 148, 150, 1)",
-                    starsColor: "rgba(255,210,80,1)",
-                    starsSize: 20,
-                    withSlider: true,
-                    autoPlaySlider: false,
-                    isItalicHeader: true,
-                    descriptionColor: "",
-                    descriptionFontWeight: 800,
-                    descriptionFontFamily: "Urbanist",
-                    descriptionFontSize: "clamp(0.875rem, 1.2vw, 1rem)",
-                    isItalicDescription: true,
-                    header:
-                      '<p style="text-align: center"><span style="font-family: Fugaz One; font-size: 26px">Testimonials</span></p><p style="text-align: center"><span style="font-family: Style Script; font-size: 40px">What our clients saya about us</span></p>',
-                    headerColor: "",
-                    textShadow: null,
-                  },
-                  background: {
-                    bgType: null,
-                    bgColor: "",
-                    bgImage: "",
-                    blur: 0,
-                    opacity: 0,
-                    padding: 0,
-                    marginTop: 0,
-                    marginBottom: 0,
-                    direction: "to right",
-                    fromColor: "",
-                    toColor: "",
-                    isRevert: false,
-                    pattern: "",
-                    rounded: 0,
-                    isFullWidth: false,
-                  },
-                },
-                isFromAI: false,
-              },
-              {
-                type: "content-showcase",
-                draggable: false,
-                attributes: {
-                  id: "i3emj",
-                },
-                customComponent: {
-                  isLocked: false,
-                  contents: [
-                    {
-                      id: "lyemsn2nd",
-                      title: "Panduan Lengkap Memulai Bisnis Online",
-                      description:
-                        "Temukan langkah-langkah praktis memulai bisnis online dari nol. Pelajari strategi pemasaran, manajemen produk, dan tips meningkatkan penjualan secara efekti",
-                      image:
-                        "https://ik.imagekit.io/ez1ffaf6o/default-images/products1.webp?updatedAt=1747115975853",
-                      target: {
-                        actionType: "link",
-                        options: {
-                          isOpenNewTab: true,
-                          link: "https://www.youtube.com/",
-                          type: "url",
-                        },
-                      },
-                    },
-                    {
-                      id: "7abhojep8",
-                      title: "Tips Meningkatkan Kualitas Produk Anda",
-                      description:
-                        "Pelajari cara meningkatkan kualitas produk Anda dengan bahan terbaik dan proses produksi yang efisien. Dapatkan kepercayaan pelanggan dan tingkatkan loyalitas merek.",
-                      image:
-                        "https://ik.imagekit.io/ez1ffaf6o/default-images/products2.webp?updatedAt=1747115975781",
-                      target: {
-                        actionType: "link",
-                        options: {
-                          type: null,
-                        },
-                      },
-                    },
-                    {
-                      id: "bralxt2jk",
-                      title: "Langkah Menciptakan Produk Inovatif",
-                      description:
-                        "Ketahui langkah-langkah menciptakan produk inovatif yang memenuhi kebutuhan pasar. Mulai dari riset hingga peluncuran, raih peluang bisnis yang lebih besar.",
-                      image:
-                        "https://ik.imagekit.io/ez1ffaf6o/default-images/products4.jpg?updatedAt=1747115975342",
-                      target: {
-                        actionType: "link",
-                        options: {
-                          type: null,
-                        },
-                      },
-                    },
-                  ],
-                  wrapperStyle: {
-                    column: "3",
-                    aspectRatio: 0.8,
-                    rounded: 20,
-                    titleColor: "",
-                    fontWeight: 700,
-                    imagePosition: "center",
-                    fontFamily: "Arvo",
-                    fontSize: "clamp(1.125rem, 2vw, 1.25rem)",
-                    textAligment: "text-center",
-                    isItalicHeader: true,
-                    descriptionColor: "",
-                    descriptionFontWeight: 900,
-                    descriptionFontFamily: "Mulish",
-                    descriptionFontSize: "clamp(0.875rem, 1.2vw, 1rem)",
-                    textAligmentDescription: "text-center",
-                    isItalicDescription: true,
-                  },
-                  background: {
-                    bgType: null,
-                    bgColor: "",
-                    bgImage: "",
-                    blur: 0,
-                    opacity: 0,
-                    padding: 0,
-                    marginTop: 0,
-                    marginBottom: 0,
-                    direction: "to right",
-                    fromColor: "",
-                    toColor: "",
-                    isRevert: false,
-                    pattern: "",
-                    rounded: 0,
-                    isFullWidth: false,
-                  },
-                },
-                isFromAI: false,
-              },
-              {
-                type: "fuzzy-text",
-                draggable: false,
-                attributes: {
-                  id: "iy0uo",
-                },
-                customComponent: {
-                  isLocked: false,
-                  text: "404",
-                  fontFamily: "Bebas Neue",
-                  fontWeight: 400,
-                  colorFuzzyText: "rgba(255, 255, 255, 1)",
-                  textAlign: "justify-center",
-                  fontSize: 120,
-                  hoverIntensity: 0.5,
-                  baseIntensity: 0.2,
-                  enableHover: true,
-                  contents: [],
                   isItalicHeader: false,
                   background: {
-                    bgType: "bgColor",
-                    bgColor: "rgba(0, 0, 0, 1)",
-                    bgImage: "",
-                    blur: 0,
-                    opacity: 0,
-                    padding: 0,
-                    marginTop: 0,
-                    marginBottom: 0,
+                    rounded: 62,
+                    marginTop: 80,
+                    marginBottom: 80,
+                    isFullWidth: true,
+                    shape: {},
+                    bgType: "gradients",
+                    fromColor: "#FF6F61",
+                    toColor: "#6B5B95",
                     direction: "to right",
-                    fromColor: "",
-                    toColor: "",
-                    isRevert: false,
-                    pattern: "",
-                    rounded: 0,
-                    isFullWidth: false,
                   },
                 },
                 isFromAI: false,
               },
               {
-                type: "glitch-text",
+                type: "checkout-form",
                 draggable: false,
                 attributes: {
-                  id: "i6xps",
+                  id: "ibdco",
                 },
                 customComponent: {
-                  isLocked: false,
-                  text: "Plasgos",
-                  fontFamily: "Merriweather",
-                  fontWeight: 900,
-                  colorGlitchText: "rgba(255, 255, 255, 1)",
-                  textAlign: "justify-center",
-                  fontSize: 120,
-                  speed: 5,
-                  enableHover: true,
-                  enableShadows: true,
-                  enableOnHover: false,
                   contents: [],
-                  isItalicHeader: true,
-                  background: {
-                    bgType: "bgColor",
-                    bgColor: "rgba(6, 6, 6, 1)",
-                    bgImage: "",
-                    blur: 0,
-                    opacity: 0,
-                    padding: 0,
-                    marginTop: 0,
-                    marginBottom: 0,
-                    direction: "to right",
-                    fromColor: "",
-                    toColor: "",
-                    isRevert: false,
-                    pattern: "",
-                    rounded: 0,
-                    isFullWidth: false,
+                  paymentMethod: {
+                    label: "Metode Pengiriman",
+                    isCod: true,
+                    isBankTransfer: true,
+                    isEpayment: true,
+                    isRequired: true,
+                    methodOptions: [],
                   },
-                },
-                isFromAI: false,
-              },
-              {
-                type: "scroll-velocity-text",
-                draggable: false,
-                attributes: {
-                  id: "ie62z",
-                },
-                customComponent: {
-                  isLocked: false,
-                  fontFamily: "Alegreya",
-                  fontWeight: 900,
-                  colorVelocity: "rgba(255, 255, 255, 1)",
-                  textAlign: "justify-center",
-                  fontSize: 80,
-                  velocity: 100,
-                  contents: [
-                    {
-                      id: "text-01-xrfm4xok1",
-                      title: "Plasgos Web",
+                  recipient: {
+                    paymentMethod: "cod",
+                  },
+                  submitEvent: {
+                    event: "instruction_page",
+                    contentTemplateCOD:
+                      '<p style="text-align: center"><span style="font-family: Montserrat; font-size: clamp(1.125rem, 2vw, 1.25rem)"><strong>Terima kasih telah memesan </strong></span><span style="font-size: clamp(1.125rem, 2vw, 1.25rem)"><strong>{{product_name}} </strong></span><br><br>Pesanan Anda sedang kami proses. <br>📦 Kurir akan mengantarkan pesanan dalam <strong>2–4 hari ke depan</strong>. <strong><br></strong><br>Mohon siapkan pembayaran sebesar:<br><br><span style="font-family: Montserrat; font-size: clamp(1.125rem, 2vw, 1.25rem); color: rgba(74,144,226,1)"><strong>{{total_price}}</strong></span><br><br>Pembayaran dilakukan <strong>langsung kepada kurir saat pesanan diterima</strong> <br><br>Terima kasih telah berbelanja bersama kami.  </p><p>Semoga Anda menikmati produk kami!</p>',
+                    contentTemplateBankTransfer:
+                      '<p style="text-align: center"><span style="font-family: Open Sans; font-size: clamp(1.125rem, 2vw, 1.25rem)"><strong>Terima kasih sudah melakukan order {{product_name}}</strong></span><br><br>Untuk menyelesaikan pembayaran, silakan transfer sejumlah: <br><br><span style="font-family: Open Sans; color: rgba(74,144,226,1)"><strong>{{total_price}} </strong></span><br><br>Ke rekening berikut : {{payment_options}} <br><br><span style="font-size: clamp(0.75rem, 1vw, 0.875rem)">Setelah melakukan transfer, jangan lupa untuk melakukan konfirmasi agar pesanan Anda segera kami proses: </span><br><br>{{bank_transfer_confirmation}}</p>',
+                    contentTemplateEpayment:
+                      '<p style="text-align: center"><span style="font-family: &quot;Open Sans&quot;; font-size: clamp(1.125rem, 2vw, 1.25rem)"><strong>Terima kasih sudah melakukan order {{product_name}}</strong></span><br><br>Untuk menyelesaikan pembayaran, silakan transfer sejumlah: <br><br><span style="font-family: &quot;Open Sans&quot;; color: rgb(74, 144, 226)"><strong>{{total_price}} </strong></span><br><br> {{payment_options}} <br><br><span style="font-size: clamp(0.75rem, 1vw, 0.875rem)">Setelah melakukan transfer, jangan lupa untuk melakukan konfirmasi agar pesanan Anda segera kami proses: </span></p>',
+                    sendingEmailInvoice: true,
+                    pixels: {
+                      facebookPixel: {
+                        ids: [],
+                        events: [
+                          {
+                            name: "InitialCheckout",
+                          },
+                        ],
+                      },
+                      tiktokPixel: {
+                        ids: [],
+                        events: [
+                          {
+                            name: "InitialCheckout",
+                          },
+                        ],
+                      },
                     },
-                    {
-                      id: "text-02-o14zxcd69",
-                      title: "Scroll Down",
+                  },
+                  wrapperStyle: {
+                    width: 500,
+                    titleSize: 24,
+                    titleColor: "rgba(0, 0, 0, 1)",
+                    labelSize: 14,
+                    labelColor: "rgba(0, 0, 0, 1)",
+                    inputColor: "rgba(255, 255, 255, 1)",
+                    inputSize: 14,
+                    textInputColor: "rgba(0, 0, 0, 1)",
+                    borderColor: "rgba(115, 115, 115, 0.5)",
+                    rounded: 8,
+                    space: 20,
+                    buttonText: "Beli Sekarang",
+                    buttonColor: "rgba(250, 84, 28,1)",
+                    iconBtn: {
+                      icon: "",
+                      color: "",
+                      size: 24,
+                      position: "right",
                     },
-                  ],
-                  isItalicHeader: true,
+                  },
                   background: {
-                    bgType: "bgColor",
-                    bgColor: "rgba(0, 0, 0, 1)",
+                    bgType: null,
+                    bgColor: "",
                     bgImage: "",
                     blur: 0,
                     opacity: 0,
@@ -960,8 +388,7 @@ const publishData = {
                     toColor: "",
                     isRevert: false,
                     pattern: "",
-                    rounded: 0,
-                    isFullWidth: false,
+                    isFullWidth: true,
                   },
                 },
                 isFromAI: false,
@@ -974,11 +401,11 @@ const publishData = {
               tagName: "html",
             },
           },
-          id: "WNfypBTbuQRx5pZI",
+          id: "HVfiptAjktL1axvz",
         },
       ],
       type: "main",
-      id: "lAZ9QLdYedmbewZC",
+      id: "tKgssznUrWEcRIsY",
     },
   ],
   symbols: [],

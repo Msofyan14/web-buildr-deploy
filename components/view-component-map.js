@@ -2,7 +2,7 @@ import ViewBlurText from "./view/blur-text";
 import ViewBusinessOverview from "./view/business-overview";
 import ViewButtonElement from "./view/button";
 import ViewFormCheckout from "./view/checkout-form";
-import ContainerWrapper from "./view/ContainerWrapper";
+import ContainerWrapper from "./ContainerWrapper";
 import ViewContentShowcase from "./view/content-showcase";
 import ViewCountDown from "./view/countdown";
 import ViewDivider from "./view/divider";

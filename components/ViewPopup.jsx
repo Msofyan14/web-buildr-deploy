@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import { useSafePopupContext } from "./ViewComponentProvider";
-import ContainerWrapper, { convertStyleToReact } from "./view/ContainerWrapper";
+import ContainerWrapper, { convertStyleToReact } from "./ContainerWrapper";
 import WrapperViewComponent from "./WrapperViewComponent";
 
 const ViewPopup = ({
