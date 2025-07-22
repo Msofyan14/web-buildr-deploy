@@ -33,60 +33,70 @@ import { cn } from "@/lib/utils";
 import { FaCheck } from "react-icons/fa6";
 import { IoIosRadioButtonOn } from "react-icons/io";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 const ePaymentOptions = [
   {
     group: "Virtual Account",
     options: [
       {
+        id: "va-bca",
         name: "BCA",
         logo: logoBca,
         value: "1234567890",
         type: "va",
       },
       {
+        id: "va-bri",
         name: "Bank BRI",
         logo: logoBri,
         value: "9876543210",
         type: "va",
       },
       {
+        id: "va-bjb",
         name: "Bank BJB",
         logo: logoBjb,
         value: "1122334455",
         type: "va",
       },
       {
+        id: "va-bni",
         name: "BNI",
         logo: logoBni,
         value: "5566778899",
         type: "va",
       },
       {
+        id: "va-cimb",
         name: "CIMB Niaga",
         logo: logoCimb,
         value: "9988776655",
         type: "va",
       },
       {
+        id: "va-mandiri",
         name: "Mandiri",
         logo: logoMandiri,
         value: "4433221100",
         type: "va",
       },
       {
+        id: "va-permata",
         name: "PermataBank",
         logo: logoPermata,
         value: "7788990011",
         type: "va",
       },
       {
+        id: "va-bss",
         name: "Bank Sahabat Sampoerna",
         logo: logoBss,
         value: "6655443322",
         type: "va",
       },
       {
+        id: "va-bsi",
         name: "Bank Syariah Indonesia",
         logo: logoBsi,
         value: "9911223344",
@@ -98,30 +108,35 @@ const ePaymentOptions = [
     group: "E-Wallet",
     options: [
       {
+        id: "wallet-ovo",
         name: "OVO",
         logo: logoOvo,
         value: "081234567890",
         type: "phone",
       },
       {
+        id: "wallet-dana",
         name: "DANA",
         logo: logoDana,
         value: "089876543210",
         type: "phone",
       },
       {
+        id: "wallet-linkaja",
         name: "LinkAja",
         logo: logoLinkaja,
         value: "087712345678",
         type: "phone",
       },
       {
+        id: "wallet-astrapay",
         name: "AstraPay",
         logo: logoAstrapay,
         value: "082112345678",
         type: "phone",
       },
       {
+        id: "wallet-shopeepay",
         name: "ShopeePay",
         logo: logoShopeePay,
         value: "088812345678",
@@ -133,12 +148,14 @@ const ePaymentOptions = [
     group: "Retail Outlets/ OTC",
     options: [
       {
+        id: "retail-alfamart",
         name: "Alfamart",
         logo: logoAlfamart,
-        value: "1234567890123456", // kode pembayaran
+        value: "1234567890123456",
         type: "retail-code",
       },
       {
+        id: "retail-indomaret",
         name: "Indomart",
         logo: logoIndomaret,
         value: "6543210987654321",
@@ -150,6 +167,7 @@ const ePaymentOptions = [
     group: "QR Codes",
     options: [
       {
+        id: "qr-qris",
         name: "QRIS",
         logo: iconQris,
         value: "https://qris.id/scan/123456789",
@@ -162,28 +180,44 @@ const ePaymentOptions = [
 export const EPayment = ({ method, isSelectedPayment, styles }) => {
   const { control, setValue, watch } = useFormContext();
 
+  const [openAccordionItems, setOpenAccordionItems] = useState([]);
+
   const handleSelect = (ePaymentData) => {
-    setValue("ePaymentData", ePaymentData, { shouldValidate: true });
-
-    setValue("paymentMethod", "e-payment", { shouldValidate: true });
-
-    setValue("bank", {});
+    setValue(
+      "paymentMethod",
+      {
+        type: "e-payment",
+        data: ePaymentData,
+      },
+      {
+        shouldValidate: true,
+      }
+    );
   };
 
-  const selectedEPayment = watch("ePaymentData");
-  const isSelectedEPaymentMethod = ePaymentOptions.map((payment) =>
-    payment.options.some((opt) => opt.name === selectedEPayment?.name)
-  );
+  const hasSelectedEpayment = ePaymentOptions
+    .flatMap((group) => group.options)
+    .some((opt) => opt.id === watch("paymentMethod.data.id"));
+
+  useEffect(() => {
+    if (hasSelectedEpayment) {
+      setOpenAccordionItems(["item-2"]);
+    } else if (!isSelectedPayment) {
+      setOpenAccordionItems([]);
+    }
+  }, [hasSelectedEpayment, isSelectedPayment]);
 
   return (
-    <Accordion type="multiple">
-      <AccordionItem value="item-1">
+    <Accordion
+      type="multiple"
+      value={openAccordionItems}
+      onValueChange={setOpenAccordionItems}
+    >
+      <AccordionItem value="item-2">
         <AccordionTrigger
           className={cn(
             "w-full px-4 py-3 text-left font-medium text-gray-900  rounded hover:bg-orange-50 !no-underline justify-between",
-            isSelectedEPaymentMethod && isSelectedPayment
-              ? "border border-orange-500"
-              : "border"
+            isSelectedPayment ? "border border-orange-500" : "border"
           )}
         >
           <div className="flex items-center gap-x-2">
@@ -198,7 +232,7 @@ export const EPayment = ({ method, isSelectedPayment, styles }) => {
           </div>
 
           <div className={`flex gap-x-2 ml-auto px-3`}>
-            {isSelectedEPaymentMethod && isSelectedPayment && (
+            {isSelectedPayment && (
               <IoIosRadioButtonOn className="text-orange-500" />
             )}
           </div>
@@ -208,14 +242,12 @@ export const EPayment = ({ method, isSelectedPayment, styles }) => {
           className={cn(
             "p-2 overflow-hidden",
 
-            isSelectedEPaymentMethod && isSelectedPayment
-              ? "border border-t-0 border-orange-500"
-              : "border"
+            isSelectedPayment ? "border border-t-0 border-orange-500" : "border"
           )}
         >
           <FormField
             control={control}
-            name="ePaymentData"
+            name="paymentMethod.data.id"
             render={({ field }) => {
               return (
                 <FormItem>
@@ -240,13 +272,14 @@ export const EPayment = ({ method, isSelectedPayment, styles }) => {
                                 <div className="flex flex-col gap-y-2">
                                   {payment.options.map((opt) => {
                                     const selectedEpaymentOption =
-                                      opt?.name === field?.value?.name;
+                                      opt?.id === field?.value;
                                     return (
                                       <div
                                         key={opt.name}
                                         className={cn(
                                           `bg-white cursor-pointer flex items-center rounded-md p-3 justify-between hover:bg-orange-50`,
                                           selectedEpaymentOption &&
+                                            isSelectedPayment &&
                                             "bg-orange-50"
                                         )}
                                         onClick={() => handleSelect(opt)}
@@ -261,7 +294,6 @@ export const EPayment = ({ method, isSelectedPayment, styles }) => {
                                               className="object-contain "
                                             />
                                           </div>
-
                                           <p className="!select-none text-sm">
                                             {opt.name}
                                           </p>

@@ -19,6 +19,7 @@ import logoBca from "@/assets/payment-logo/logo-bca.png";
 import logoBri from "@/assets/payment-logo/logo-bri.png";
 import logoMandiri from "@/assets/payment-logo/logo-mandiri.png";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 const bankOptions = [
   {
@@ -50,30 +51,47 @@ const bankOptions = [
   },
 ];
 
-export const BankTransfer = ({
-  method,
-  isSelectedPayment,
-  isSelectedBankMethod,
-  styles,
-}) => {
-  const { control, setValue } = useFormContext();
+export const BankTransfer = ({ method, isSelectedPayment, styles }) => {
+  const { control, setValue, watch } = useFormContext();
+
+  const [openAccordionItems, setOpenAccordionItems] = useState([]);
 
   const handleSelectBank = (bankData) => {
-    setValue("bank", bankData, { shouldValidate: true });
-
-    setValue("paymentMethod", "bankTransfer", { shouldValidate: true });
-
-    setValue("ePaymentData", {});
+    setValue(
+      "paymentMethod",
+      {
+        type: "bankTransfer",
+        data: bankData,
+      },
+      {
+        shouldValidate: true,
+      }
+    );
   };
+
+  const hasSelectedBank = bankOptions.some(
+    (bank) => bank.id === watch("paymentMethod.data.id")
+  );
+
+  useEffect(() => {
+    if (hasSelectedBank) {
+      setOpenAccordionItems(["item-1"]);
+    } else if (!isSelectedPayment) {
+      setOpenAccordionItems([]);
+    }
+  }, [hasSelectedBank, isSelectedPayment]);
+
   return (
-    <Accordion type="multiple">
+    <Accordion
+      type="multiple"
+      value={openAccordionItems}
+      onValueChange={setOpenAccordionItems}
+    >
       <AccordionItem value="item-1">
         <AccordionTrigger
           className={cn(
             "w-full px-4 py-3 text-left font-medium text-gray-900  rounded hover:bg-orange-50 !no-underline justify-between",
-            isSelectedBankMethod && isSelectedPayment
-              ? "border border-orange-500"
-              : "border"
+            isSelectedPayment ? "border border-orange-500" : "border"
           )}
         >
           <div className="flex items-center gap-x-2">
@@ -90,7 +108,7 @@ export const BankTransfer = ({
           </div>
 
           <div className={`flex gap-x-2 ml-auto px-3`}>
-            {isSelectedBankMethod && isSelectedPayment && (
+            {isSelectedPayment && (
               <IoIosRadioButtonOn className="text-orange-500" />
             )}
           </div>
@@ -100,49 +118,47 @@ export const BankTransfer = ({
           className={cn(
             "p-2 overflow-hidden",
 
-            isSelectedBankMethod && isSelectedPayment
-              ? "border border-t-0 border-orange-500"
-              : "border"
+            isSelectedPayment ? "border border-t-0 border-orange-500" : "border"
           )}
         >
           <FormField
             control={control}
-            name="bank"
+            name="paymentMethod.data.id"
             render={({ field }) => {
               return (
                 <FormItem>
                   <FormControl>
                     <div className="flex flex-col   rounded-md p-1">
                       <div className="flex flex-col gap-y-2">
-                        {bankOptions.map((payment) => {
-                          const selectedBankOption =
-                            payment?.id === field?.value?.id;
+                        {bankOptions.map((bank) => {
+                          const selectedBankOption = bank?.id === field?.value;
 
                           return (
                             <div
-                              key={payment.id}
+                              key={bank.id}
                               className={cn(
                                 `bg-white cursor-pointer  flex items-center  rounded-md p-3 justify-between hover:bg-orange-50`,
 
-                                selectedBankOption && "bg-orange-50"
+                                selectedBankOption &&
+                                  isSelectedPayment &&
+                                  "bg-orange-50"
                               )}
                               onClick={() => {
-                                handleSelectBank(payment);
+                                handleSelectBank(bank);
                               }}
                             >
                               <div className="flex items-center !select-none">
                                 <div className="relative w-14 h-14 mr-3 !select-none">
                                   <Image
-                                    src={payment.logo}
-                                    alt={payment.name}
+                                    src={bank.logo}
+                                    alt={bank.name}
                                     fill
                                     sizes="(min-width: 768px) 64px, 40px"
                                     className="object-contain "
                                   />
                                 </div>
-
                                 <p className="!select-none  text-sm">
-                                  Transfer {payment.name}
+                                  Transfer {bank.name}
                                 </p>
                               </div>
 

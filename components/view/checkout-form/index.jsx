@@ -19,6 +19,8 @@ import { Check, ChevronDown } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { useRouter } from "next/navigation";
+
 const frameworks = [
   {
     value: "next.js",
@@ -41,95 +43,6 @@ const frameworks = [
     label: "Astro",
   },
 ];
-
-const generateCustomFieldSchema = () => {
-  return z.array(
-    z
-      .record(z.any()) // Mengizinkan objek dengan struktur bebas
-      .superRefine((data, ctx) => {
-        if (data.isRequired && (!data.value || data.value === "")) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            path: ["value"],
-            message: "Required",
-          });
-        }
-
-        // Validasi email jika type === "email"
-        if (data.type === "email" && typeof data.value === "string") {
-          const emailSchema = z.string().email();
-          const result = emailSchema.safeParse(data.value);
-
-          if (!result.success) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              path: ["value"],
-              message: "Invalid email format",
-            });
-          }
-        }
-
-        // Validasi email jika type === "phoneNumber"
-        if (data.type === "phoneNumber" && typeof data.value === "string") {
-          if (!data.isRequired && !data.value) {
-            return;
-          }
-
-          const phoneNumberSchema = z.string().regex(/^8\d{8,13}$/, {
-            message: "Enter a valid number starting with 8, e.g. 8950000xxxx",
-          });
-          const result = phoneNumberSchema.safeParse(data.value);
-
-          if (!result.success) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              path: ["value"],
-              message: "Enter a valid number starting with 8, e.g. 8950000xxxx",
-            });
-          }
-        }
-      })
-  );
-};
-
-const formSchema = z
-  .object({
-    name: z.string().min(3, "Name must be at least 3 characters").max(50),
-    email: z.string().email(),
-    phoneNumber: z.string().regex(/^8\d{8,13}$/, {
-      message: "Enter a valid number starting with 8, e.g. 8950000xxxx",
-    }),
-    address: z
-      .string()
-      .min(8, "Address must be at least 8 characters")
-      .max(500),
-    // city: z.string().optional(),
-    // subdistrict: z.string().optional(),
-    // isDropshipping: z.boolean().optional(),
-    // nameDropshipper: z.string().optional(),
-    // phoneNumberDropshipper: z.string().optional(),
-
-    paymentMethod: z.enum(["bankTransfer", "cod", "e-payment"], {
-      message: "Requred Payment Method",
-    }),
-    bank: z.any().optional(),
-    courier: z.string().min(1, { message: "Required" }),
-    courierPackage: z.string().min(1, { message: "Required" }),
-    customFields: generateCustomFieldSchema(),
-  })
-  .superRefine((data, ctx) => {
-    // Jika paymentMethod adalah "bankTransfer", maka "bank" harus diisi
-    if (
-      data.paymentMethod === "bankTransfer" &&
-      (!data.bank || !data.bank.id || !data.bank.name)
-    ) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["bank"],
-        message: "Bank selection is required for bank transfer",
-      });
-    }
-  });
 
 import { Button } from "@/components/ui/button";
 import {
@@ -160,9 +73,141 @@ import ViewTitle from "./_components/ViewTitle";
 import ViewRating from "./_components/ViewtRating";
 import PaymentMethod from "./_components/payment-method";
 
+const generateCustomFieldSchema = (contents) => {
+  if (!contents || contents.length === 0) {
+    return z.array(z.any()).optional(); // Tidak divalidasi jika kosong
+  }
+
+  return z.array(
+    z.record(z.any()).superRefine((data, ctx) => {
+      if (data.isRequired && (!data.value || data.value === "")) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["value"],
+          message: "Required",
+        });
+      }
+
+      if (data.type === "email") {
+        const isEmpty = data.value === undefined || data.value === "";
+        if (data.isRequired || (!data.isRequired && !isEmpty)) {
+          const emailSchema = z.string().email();
+          const result = emailSchema.safeParse(data.value);
+
+          if (!result.success) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              path: ["value"],
+              message: "Invalid email format",
+            });
+          }
+        }
+      }
+
+      if (data.type === "phoneNumber") {
+        const isEmpty = data.value === undefined || data.value === "";
+        if (data.isRequired || (!data.isRequired && !isEmpty)) {
+          const phoneNumberSchema = z.string().regex(/^8\d{8,13}$/, {
+            message: "Enter a valid number starting with 8, e.g. 8950000xxxx",
+          });
+          const result = phoneNumberSchema.safeParse(data.value);
+
+          if (!result.success) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              path: ["value"],
+              message: "Enter a valid number starting with 8, e.g. 8950000xxxx",
+            });
+          }
+        }
+      }
+    })
+  );
+};
+
 const ViewFormCheckout = ({ section }) => {
-  const { contents, submitEvent } = section;
+  const { contents, submitEvent, paymentMethod, products } = section;
+
+  const { isRequired, isCod, isBankTransfer, isEpayment } = paymentMethod || {};
+
+  const router = useRouter();
+
+  const createPaymentMethodSchema = ({
+    isCod,
+    isBankTransfer,
+    isEpayment,
+    isRequired,
+  }) => {
+    const allowedValues = [
+      isCod && "cod",
+      isBankTransfer && "bankTransfer",
+      isEpayment && "e-payment",
+    ].filter(Boolean);
+
+    const schema = z
+      .object({
+        type: z
+          .string({
+            required_error: isRequired
+              ? "Payment method is required"
+              : undefined,
+          })
+          .refine((val) => allowedValues.includes(val), {
+            message: `Payment method is required`,
+          }),
+        data: z.any().optional(),
+      })
+      .refine(
+        (val) => {
+          if (val.type === "cod") return true;
+          return val.data != null; // harus ada data kalau bukan COD
+        },
+        {
+          message: "Data is required for this payment method",
+          path: ["data", "id"],
+        }
+      );
+
+    return schema;
+  };
+
+  const formSchema = z.object({
+    name: z.string().min(3, "Name must be at least 3 characters").max(50),
+    email: z.string().email(),
+    phoneNumber: z.string().regex(/^8\d{8,13}$/, {
+      message: "Enter a valid number starting with 8, e.g. 8950000xxxx",
+    }),
+    address: z
+      .string()
+      .min(8, "Address must be at least 8 characters")
+      .max(500),
+    // city: z.string().optional(),
+    // subdistrict: z.string().optional(),
+    // isDropshipping: z.boolean().optional(),
+    // nameDropshipper: z.string().optional(),
+    // phoneNumberDropshipper: z.string().optional(),
+
+    paymentMethod: createPaymentMethodSchema({
+      isBankTransfer: isBankTransfer,
+      isCod: isCod,
+      isEpayment: isEpayment,
+      isRequired: isRequired,
+    }),
+    bank: z.any().optional(),
+    courier: z.string().min(1, { message: "Required" }),
+    courierPackage: z.string().min(1, { message: "Required" }),
+    customFields: z.lazy(() => generateCustomFieldSchema(contents)),
+    products: z.object(
+      {
+        id: z.string(),
+        name: z.string(),
+        price: z.string(),
+      },
+      { message: "Products Required" }
+    ),
+  });
   const {
+    width,
     titleColor,
     titleSize,
     labelSize,
@@ -205,6 +250,7 @@ const ViewFormCheckout = ({ section }) => {
   }, [contents, form, form.setValue]);
 
   const onSubmit = (data) => {
+    console.log("🚀 ~ onSubmit ~ data:", data);
     const {
       event,
       waNumber,
@@ -216,9 +262,9 @@ const ViewFormCheckout = ({ section }) => {
     } = submitEvent;
 
     const selectedChatTempate =
-      data?.paymentMethod === "cod"
+      data?.paymentMethod?.type === "cod"
         ? contentTemplateCOD
-        : data?.paymentMethod === "bankTransfer"
+        : data?.paymentMethod?.type === "bankTransfer"
         ? contentTemplateBankTransfer
         : contentTemplateEpayment;
 
@@ -230,15 +276,37 @@ const ViewFormCheckout = ({ section }) => {
     } else if (event === "custom_url" && customUrl) {
       window.open(customUrl, "_blank", "noopener noreferrer");
     } else if (event === "instruction_page") {
-      return;
+      router.push(`/slug/payment`);
+      sessionStorage.setItem(
+        "paymentData",
+        JSON.stringify({
+          ...data,
+          chatTemplate: selectedChatTempate,
+        })
+      );
     }
   };
+
+  useEffect(() => {
+    if (Object.keys(products).length > 0) {
+      setTimeout(() => {
+        form.setValue("products", products);
+      }, 0);
+    }
+  }, [form, form.setValue, products]);
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
 
+  console.log("ERROR", form.formState.errors);
+
   return (
-    <div>
+    <div
+      style={{
+        maxWidth: width || "100%",
+      }}
+      className="mx-auto w-full"
+    >
       <Form {...form}>
         <form className="space-y-3 relative p-5">
           <ViewTitle
@@ -329,7 +397,7 @@ const ViewFormCheckout = ({ section }) => {
                       borderRadius: rounded,
                     }}
                     className="placeholder:text-neutral-300"
-                    placeholder="628952367xxxx"
+                    placeholder="8950000xxxx"
                     {...field}
                   />
                 </FormControl>
@@ -465,14 +533,16 @@ const ViewFormCheckout = ({ section }) => {
                   {content.type === "title" && (
                     <ViewTitle
                       content={content}
-                      labelColor={labelColor}
-                      labelSize={labelSize}
+                      titleSize={titleSize}
+                      titleColor={titleColor}
                     />
                   )}
                   {(content.type === "text-input" ||
+                    content.type === "discount-code" ||
                     content.type === "phoneNumber") && (
                     <ViewInput content={content} index={index} />
                   )}
+
                   {content.type === "email" && (
                     <ViewEmail content={content} index={index} />
                   )}
@@ -502,10 +572,13 @@ const ViewFormCheckout = ({ section }) => {
             })}
 
           <Shipping styles={section.wrapperStyle} />
-          <PaymentMethod
-            paymentMethod={section?.paymentMethod}
-            styles={section.wrapperStyle}
-          />
+
+          {section?.paymentMethod?.isRequired && (
+            <PaymentMethod
+              paymentMethod={section?.paymentMethod}
+              styles={section.wrapperStyle}
+            />
+          )}
 
           <Button
             size="lg"
@@ -514,7 +587,7 @@ const ViewFormCheckout = ({ section }) => {
               marginBottom: "10px",
             }}
             onClick={form.handleSubmit(onSubmit)}
-            className="w-full"
+            className="w-full cursor-pointer"
             type="button"
           >
             {" "}

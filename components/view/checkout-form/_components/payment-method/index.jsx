@@ -4,51 +4,17 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { Fragment, useEffect, useMemo } from "react";
+import { Fragment, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
-
-import logoMandiri from "@/assets/payment-logo/logo-mandiri.png";
-import logoBca from "@/assets/payment-logo/logo-bca.png";
-import logoBri from "@/assets/payment-logo/logo-bri.png";
 
 import ViewTitle from "../ViewTitle";
 import { BankTransfer } from "./BankTransfer";
 import { COD } from "./COD";
 import { EPayment } from "./EPayment";
 
-const bankOptions = [
-  {
-    id: "1",
-    name: "Bank BCA",
-    code_name: "bca",
-    account_number: "3428843888",
-    account_name: "PT. Plasa Grosir Indonesia",
-    logo: logoBca,
-    is_default: true,
-  },
-  {
-    id: "2",
-    name: "Bank BRI",
-    code_name: "bri",
-    account_number: "038601001383302",
-    account_name: "PT. Plasa Grosir Indonesia",
-    logo: logoBri,
-    is_default: false,
-  },
-  {
-    id: "3",
-    name: "Bank Mandiri",
-    code_name: "mandiri",
-    account_number: "0060010352833",
-    account_name: "PT. Plasa Grosir Indonesia",
-    logo: logoMandiri,
-    is_default: false,
-  },
-];
-
 const PaymentMethod = ({ paymentMethod, styles }) => {
   const { titleSize, titleColor } = styles;
-  const { control, setValue, watch } = useFormContext();
+  const { control } = useFormContext();
 
   const getPaymentMethodOptions = (value) => [
     {
@@ -79,25 +45,8 @@ const PaymentMethod = ({ paymentMethod, styles }) => {
     [paymentMethod]
   );
 
-  const selectedPaymentMethod = watch("paymentMethod");
-  const selectedBank = watch("bank");
-
-  useEffect(() => {
-    const isSelectedValid = paymentMethodOptions.some(
-      (option) => option.value === selectedPaymentMethod
-    );
-
-    if (!isSelectedValid) {
-      setValue("paymentMethod", "", { shouldValidate: false });
-    }
-  }, [paymentMethodOptions, selectedPaymentMethod, setValue]);
-
   const renderPaymentMethod = (method, field) => {
     const isSelectedPayment = field.value === method.value;
-
-    const isSelectedBankMethod = bankOptions.some(
-      (opt) => opt.id === selectedBank.id
-    );
 
     switch (method.value) {
       case "bankTransfer":
@@ -105,7 +54,6 @@ const PaymentMethod = ({ paymentMethod, styles }) => {
           <BankTransfer
             method={method}
             isSelectedPayment={isSelectedPayment}
-            isSelectedBankMethod={isSelectedBankMethod}
             styles={styles}
           />
         );
@@ -117,7 +65,6 @@ const PaymentMethod = ({ paymentMethod, styles }) => {
           <EPayment
             method={method}
             isSelectedPayment={isSelectedPayment}
-            isSelectedBankMethod={isSelectedBankMethod}
             styles={styles}
           />
         );
@@ -134,7 +81,7 @@ const PaymentMethod = ({ paymentMethod, styles }) => {
 
       <FormField
         control={control}
-        name="paymentMethod"
+        name="paymentMethod.type"
         render={({ field }) => (
           <FormItem>
             <FormControl>

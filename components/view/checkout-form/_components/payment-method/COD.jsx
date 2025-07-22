@@ -9,26 +9,16 @@ export const COD = ({ method, isSelectedPayment }) => {
   return (
     <div
       onClick={() => {
-        setValue("paymentMethod", method.value, {
-          shouldValidate: true,
-        });
-
-        if (method.value !== "bankTransfer") {
-          setValue(
-            "bank",
-            {},
-            {
-              shouldValidate: true,
-            }
-          );
-          setValue(
-            "ePaymentData",
-            {},
-            {
-              shouldValidate: true,
-            }
-          );
-        }
+        setValue(
+          "paymentMethod",
+          {
+            type: method.value,
+            data: null,
+          },
+          {
+            shouldValidate: true,
+          }
+        );
       }}
       className={cn(
         "flex justify-between items-center p-3 rounded cursor-pointer",

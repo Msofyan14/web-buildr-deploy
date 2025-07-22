@@ -2,6 +2,7 @@ import { useViewport } from "@/hooks/useViewport";
 import { generateId } from "@/lib/utils";
 import WrapperViewComponent from "./WrapperViewComponent";
 import { WaveShape } from "./WaveShape";
+import { MultiWaveShape } from "./MultiWaveShape";
 
 export function convertStyleToReact(styleObj) {
   const newStyle = {};
@@ -138,7 +139,7 @@ const ContainerWrapper = ({
         position: "relative",
         maxWidth: isFullWidth ? "100%" : maxWidthPage,
       }}
-      className="w-full   mx-auto "
+      className="w-full   mx-auto overflow-x-hidden"
     >
       {bgType === "image" ? (
         <div style={stylesBg.backgroundImgStyle}></div>
@@ -196,13 +197,25 @@ const ContainerWrapper = ({
       </div>
 
       {shape?.value && (
-        <WaveShape
-          path={shape?.value}
-          position={shape?.position}
-          flip={shape?.flip}
-          color={shape?.color}
-          height={shape?.height}
-        />
+        <>
+          {Array.isArray(shape?.value) ? (
+            <MultiWaveShape
+              paths={shape.value}
+              color={shape?.color}
+              position={shape?.position}
+              flip={shape.flip}
+              height={shape?.height}
+            />
+          ) : (
+            <WaveShape
+              path={shape?.value}
+              position={shape?.position}
+              flip={shape?.flip}
+              color={shape?.color}
+              height={shape?.height}
+            />
+          )}
+        </>
       )}
     </div>
   );

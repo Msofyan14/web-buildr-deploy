@@ -1,6 +1,7 @@
 import { useBackgroundStyles } from "@/hooks/useBackgroundStyles";
 import { cn } from "@/lib/utils";
 import { WaveShape } from "./WaveShape";
+import { MultiWaveShape } from "./MultiWaveShape";
 
 const ContainerView = ({
   children,
@@ -74,13 +75,25 @@ const ContainerView = ({
       </div>
 
       {shape?.value && (
-        <WaveShape
-          path={shape?.value}
-          position={shape?.position}
-          flip={shape?.flip}
-          color={shape?.color}
-          height={shape?.height}
-        />
+        <>
+          {Array.isArray(shape?.value) ? (
+            <MultiWaveShape
+              paths={shape.value}
+              color={shape?.color}
+              position={shape?.position}
+              flip={shape.flip}
+              height={shape?.height}
+            />
+          ) : (
+            <WaveShape
+              path={shape?.value}
+              position={shape?.position}
+              flip={shape?.flip}
+              color={shape?.color}
+              height={shape?.height}
+            />
+          )}
+        </>
       )}
     </div>
   );
