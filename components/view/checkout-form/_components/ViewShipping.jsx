@@ -21,7 +21,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
+import { cn, formatRupiah } from "@/lib/utils";
 import { Check, ChevronDown } from "lucide-react";
 
 import { useState } from "react";
@@ -32,48 +32,60 @@ const couriers = [
     value: "jne",
     label: "JNE",
     packages: [
-      { value: "jne-oke", label: "JNE OKE (Ongkos Kirim Ekonomis)" },
-      { value: "jne-reg", label: "JNE REG (Reguler)" },
-      { value: "jne-yes", label: "JNE YES (Yakin Esok Sampai)" },
+      {
+        value: "jne-oke",
+        label: "JNE OKE (Ongkos Kirim Ekonomis)",
+        price: 10000,
+      },
+      { value: "jne-reg", label: "JNE REG (Reguler)", price: 13000 },
+      { value: "jne-yes", label: "JNE YES (Yakin Esok Sampai)", price: 18000 },
     ],
   },
   {
     value: "jnt",
     label: "J&T Express",
     packages: [
-      { value: "jnt-express", label: "J&T Express (Regular)" },
-      { value: "jnt-economy", label: "J&T Economy" },
+      { value: "jnt-express", label: "J&T Express (Regular)", price: 12000 },
+      { value: "jnt-economy", label: "J&T Economy", price: 9000 },
     ],
   },
   {
     value: "sicepat",
     label: "SiCepat",
     packages: [
-      { value: "sicepat-reg", label: "SiCepat REG (Reguler)" },
-      { value: "sicepat-best", label: "SiCepat BEST (Besok Sampai Tujuan)" },
-      { value: "sicepat-cod", label: "SiCepat COD" },
+      { value: "sicepat-reg", label: "SiCepat REG (Reguler)", price: 11000 },
+      {
+        value: "sicepat-best",
+        label: "SiCepat BEST (Besok Sampai Tujuan)",
+        price: 16000,
+      },
+      { value: "sicepat-cod", label: "SiCepat COD", price: 14000 },
     ],
   },
   {
     value: "tiki",
     label: "TIKI",
     packages: [
-      { value: "tiki-reg", label: "TIKI REG (Reguler)" },
-      { value: "tiki-ons", label: "TIKI ONS (Over Night Service)" },
-      { value: "tiki-eco", label: "TIKI ECO (Economy Service)" },
+      { value: "tiki-reg", label: "TIKI REG (Reguler)", price: 12500 },
+      {
+        value: "tiki-ons",
+        label: "TIKI ONS (Over Night Service)",
+        price: 17000,
+      },
+      { value: "tiki-eco", label: "TIKI ECO (Economy Service)", price: 9500 },
     ],
   },
   {
     value: "pos",
     label: "POS Indonesia",
     packages: [
-      { value: "pos-kilat", label: "POS Kilat Khusus" },
-      { value: "pos-express", label: "POS Express" },
+      { value: "pos-kilat", label: "POS Kilat Khusus", price: 10000 },
+      { value: "pos-express", label: "POS Express", price: 15000 },
     ],
   },
 ];
 
-const Shipping = ({ styles }) => {
+const ViewShipping = ({ styles }) => {
   const {
     width,
     titleSize,
@@ -85,11 +97,11 @@ const Shipping = ({ styles }) => {
     borderColor,
   } = styles;
 
-  const { control, setValue, watch } = useFormContext();
+  const { control, watch, setValue } = useFormContext();
   const [open, setOpen] = useState(false);
   const [openPackage, setOpenPackage] = useState(false);
 
-  const selectedCourier = watch("courier");
+  const selectedCourier = watch("courier.name");
 
   const availablePackages =
     couriers?.find((courier) => courier.value === selectedCourier)?.packages ||
@@ -111,7 +123,7 @@ const Shipping = ({ styles }) => {
       >
         <FormField
           control={control}
-          name="courier"
+          name="courier.name"
           render={({ field }) => (
             <FormItem className=" w-full">
               <FormControl>
@@ -155,13 +167,10 @@ const Shipping = ({ styles }) => {
                               key={courier.value}
                               value={courier.value}
                               onSelect={(currentValue) => {
-                                setValue("courier", currentValue, {
-                                  shouldValidate: true,
-                                });
+                                field.onChange(currentValue);
 
-                                if (currentValue !== field.value) {
-                                  setValue("courierPackage", "");
-                                }
+                                setValue("courier.price", "");
+                                setValue("courier.serviceType", "");
 
                                 setOpen(false);
                               }}
@@ -189,84 +198,89 @@ const Shipping = ({ styles }) => {
           )}
         />
 
-        {selectedCourier && (
-          <FormField
-            control={control}
-            name="courierPackage"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormControl>
-                  <Popover open={openPackage} onOpenChange={setOpenPackage}>
-                    <PopoverTrigger asChild>
-                      <Button
-                        style={{
-                          border: `1px solid ${borderColor}`,
-                          fontSize: inputSize ? inputSize : "",
-                          color: textInputColor,
-                          borderRadius: rounded,
-                          backgroundColor: inputColor,
-                        }}
-                        variant="outline"
-                        role="combobox"
-                        aria-expanded={openPackage}
-                        className="w-full justify-between"
-                      >
-                        {field.value
-                          ? availablePackages.find(
-                              (pkg) => pkg.value === field.value
-                            )?.label
-                          : "Pilih Paket..."}
-                        <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent
+        <FormField
+          control={control}
+          name="courier.serviceType"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormControl>
+                <Popover open={openPackage} onOpenChange={setOpenPackage}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      disabled={!selectedCourier}
                       style={{
                         border: `1px solid ${borderColor}`,
+                        fontSize: inputSize ? inputSize : "",
+                        color: textInputColor,
                         borderRadius: rounded,
+                        backgroundColor: inputColor,
                       }}
-                      className="min-w-full p-0 overflow-hidden"
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={openPackage}
+                      className="w-full justify-between"
                     >
-                      <Command>
-                        <CommandInput placeholder="Cari Paket..." />
-                        <CommandList>
-                          <CommandEmpty>Tidak Ditemukan</CommandEmpty>
-                          <CommandGroup>
-                            {availablePackages.map((pkg) => (
-                              <CommandItem
-                                key={pkg.value}
-                                value={pkg.value}
-                                onSelect={(currentValue) => {
-                                  setValue("courierPackage", currentValue, {
-                                    shouldValidate: true,
-                                  });
-                                  setOpenPackage(false);
-                                }}
-                              >
-                                <Check
-                                  className={cn(
-                                    "mr-2 h-4 w-4",
-                                    field.value === pkg.value
-                                      ? "opacity-100"
-                                      : "opacity-0"
-                                  )}
-                                />
-                                {pkg.label}
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
+                      {field.value
+                        ? availablePackages.find(
+                            (pkg) => pkg.value === field.value
+                          )?.label
+                        : "Pilih Service..."}
+                      <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent
+                    style={{
+                      border: `1px solid ${borderColor}`,
+                      borderRadius: rounded,
+                    }}
+                    className="w-[320px] md:w-full p-0 overflow-hidden"
+                  >
+                    <Command>
+                      <CommandInput placeholder="Cari Paket..." />
+                      <CommandList>
+                        <CommandEmpty>Tidak Ditemukan</CommandEmpty>
+                        <CommandGroup className="">
+                          {availablePackages.map((pkg) => (
+                            <CommandItem
+                              key={pkg.value}
+                              value={pkg.value}
+                              onSelect={(currentValue) => {
+                                field.onChange(currentValue);
+
+                                setValue("courier.price", pkg.price, {
+                                  shouldValidate: true,
+                                });
+
+                                setOpenPackage(false);
+                              }}
+                            >
+                              {pkg.label} -
+                              <span className="font-semibold">
+                                {formatRupiah(pkg.price)}
+                              </span>
+                              <Check
+                                className={cn(
+                                  "ml-auto",
+                                  field.value === pkg.value
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
       </div>
     </div>
   );
 };
 
-export default Shipping;
+export default ViewShipping;

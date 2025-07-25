@@ -12,18 +12,24 @@ const publishData = {
             stylable: "",
             highlightable: false,
             hoverable: false,
-            attributes: {
-              id: "ilml",
-            },
             components: [
               {
                 type: "checkout-form",
                 draggable: false,
                 attributes: {
-                  id: "i01o",
+                  id: "ilxl",
                 },
                 customComponent: {
                   contents: [],
+                  isShippingRequired: true,
+                  isAddressRequired: true,
+                  address: {
+                    isRequired: true,
+                    type: "full-address",
+                  },
+                  shipping: {
+                    isRequired: true,
+                  },
                   paymentMethod: {
                     label: "Metode Pengiriman",
                     isCod: true,
@@ -31,6 +37,10 @@ const publishData = {
                     isEpayment: true,
                     isRequired: true,
                     methodOptions: [],
+                  },
+                  summary: {
+                    isRequired: true,
+                    label: "Ringkasan Pesanan",
                   },
                   recipient: {
                     paymentMethod: {
@@ -43,9 +53,9 @@ const publishData = {
                     label: "Store A",
                   },
                   products: {
-                    id: "2",
-                    name: "Pants",
-                    price: "320000",
+                    id: "1",
+                    name: "T-Shirt",
+                    price: "120000",
                   },
                   submitEvent: {
                     event: "instruction_page",
@@ -79,7 +89,7 @@ const publishData = {
                     },
                   },
                   wrapperStyle: {
-                    width: 479,
+                    width: 500,
                     titleSize: 24,
                     titleColor: "rgba(0, 0, 0, 1)",
                     labelSize: 14,
@@ -126,11 +136,11 @@ const publishData = {
               tagName: "html",
             },
           },
-          id: "5u6KIBP37whjI2rj",
+          id: "NezOqa8xKayzVJbC",
         },
       ],
       type: "main",
-      id: "QEPuYRfldlb8nced",
+      id: "hLAHMaAZzWguWw9D",
     },
   ],
   symbols: [],

@@ -1,48 +1,10 @@
 "use client";
 
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Check, ChevronDown } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { useRouter } from "next/navigation";
-
-const frameworks = [
-  {
-    value: "next.js",
-    label: "Next.js",
-  },
-  {
-    value: "sveltekit",
-    label: "SvelteKit",
-  },
-  {
-    value: "nuxt.js",
-    label: "Nuxt.js",
-  },
-  {
-    value: "remix",
-    label: "Remix",
-  },
-  {
-    value: "astro",
-    label: "Astro",
-  },
-];
 
 import { Button } from "@/components/ui/button";
 import {
@@ -50,17 +12,14 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { createElement } from "react";
 import * as Icons from "react-icons/fa";
 import CustomLabelField from "./_components/CustomLabelField";
-import Shipping from "./_components/Shipping";
 import ViewCheckbox from "./_components/ViewCheckbox";
 import ViewDate from "./_components/ViewDate";
 import ViewDividerField from "./_components/ViewDividerField";
@@ -72,6 +31,9 @@ import ViewTextArea from "./_components/ViewTextArea";
 import ViewTitle from "./_components/ViewTitle";
 import ViewRating from "./_components/ViewtRating";
 import PaymentMethod from "./_components/payment-method";
+import ViewSummaryOrder from "./_components/ViewSummaryOrder";
+import ViewShipping from "./_components/ViewShipping";
+import { ViewAddressField } from "./_components/ViewAddressField";
 
 const generateCustomFieldSchema = (contents) => {
   if (!contents || contents.length === 0) {
@@ -126,7 +88,15 @@ const generateCustomFieldSchema = (contents) => {
 };
 
 const ViewFormCheckout = ({ section }) => {
-  const { contents, submitEvent, paymentMethod, products } = section;
+  const {
+    contents,
+    submitEvent,
+    paymentMethod,
+    products,
+    shipping,
+    address,
+    summary,
+  } = section;
 
   const { isRequired, isCod, isBankTransfer, isEpayment } = paymentMethod || {};
 
@@ -171,18 +141,64 @@ const ViewFormCheckout = ({ section }) => {
     return schema;
   };
 
+  const createCourierSchema = ({ isRequired }) => {
+    if (!isRequired) {
+      return z.object({
+        name: z.string().optional(),
+        serviceType: z.string().optional(),
+        price: z.coerce.number().optional(),
+      });
+    }
+
+    return z.object({
+      name: z.string().min(1, "Required"),
+      serviceType: z.string().min(1, "Required"),
+      price: z.coerce.number(),
+    });
+  };
+
+  const createAddressSchema = ({ isRequired, type }) => {
+    const isSubdistrictOnly = type === "subdistrict-only";
+
+    if (!isRequired) {
+      // Semua optional
+      return z.object({
+        province: z.string().optional(),
+        district: z.string().optional(),
+        subdistrict: z.string().optional(),
+        fullAddress: z.string().optional(),
+      });
+    }
+
+    // isRequired: true
+    return z.object({
+      province: isSubdistrictOnly
+        ? z.string().optional()
+        : z.string().min(1, "Required"),
+
+      district: isSubdistrictOnly
+        ? z.string().optional()
+        : z.string().min(1, "Required"),
+
+      subdistrict: z.string().min(1, "Required"),
+
+      fullAddress: z
+        .string()
+        .min(5, "Address minimum 5 character")
+        .max(200, "Address too long"),
+    });
+  };
+
   const formSchema = z.object({
     name: z.string().min(3, "Name must be at least 3 characters").max(50),
     email: z.string().email(),
     phoneNumber: z.string().regex(/^8\d{8,13}$/, {
       message: "Enter a valid number starting with 8, e.g. 8950000xxxx",
     }),
-    address: z
-      .string()
-      .min(8, "Address must be at least 8 characters")
-      .max(500),
-    // city: z.string().optional(),
-    // subdistrict: z.string().optional(),
+    address: createAddressSchema({
+      isRequired: address?.isRequired,
+      type: address?.type,
+    }),
     // isDropshipping: z.boolean().optional(),
     // nameDropshipper: z.string().optional(),
     // phoneNumberDropshipper: z.string().optional(),
@@ -194,8 +210,7 @@ const ViewFormCheckout = ({ section }) => {
       isRequired: isRequired,
     }),
     bank: z.any().optional(),
-    courier: z.string().min(1, { message: "Required" }),
-    courierPackage: z.string().min(1, { message: "Required" }),
+    courier: createCourierSchema({ isRequired: shipping?.isRequired }),
     customFields: z.lazy(() => generateCustomFieldSchema(contents)),
     products: z.object(
       {
@@ -206,6 +221,7 @@ const ViewFormCheckout = ({ section }) => {
       { message: "Products Required" }
     ),
   });
+
   const {
     width,
     titleColor,
@@ -227,16 +243,25 @@ const ViewFormCheckout = ({ section }) => {
       name: "",
       email: "",
       phoneNumber: "",
-      address: "",
-      city: "",
-      subdistrict: "",
+      address: {
+        fullAddress: "",
+        province: "",
+        district: "",
+        subdistrict: "",
+      },
       isDropshipping: false,
       nameDropshipper: "",
       phoneNumberDropshipper: false,
-      paymentMethod: "",
+      paymentMethod: {
+        type: "",
+        data: {},
+      },
       bank: {},
-      courier: "",
-      courierPackage: "",
+      courier: {
+        name: "",
+        serviceType: "",
+        price: "",
+      },
       customFields: [],
     },
   });
@@ -295,9 +320,6 @@ const ViewFormCheckout = ({ section }) => {
     }
   }, [form, form.setValue, products]);
 
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("");
-
   console.log("ERROR", form.formState.errors);
 
   return (
@@ -308,7 +330,7 @@ const ViewFormCheckout = ({ section }) => {
       className="mx-auto w-full"
     >
       <Form {...form}>
-        <form className="space-y-3 relative p-5">
+        <form className="space-y-5 relative p-5">
           <ViewTitle
             content={{ value: "Data Penerima" }}
             titleSize={titleSize}
@@ -406,124 +428,13 @@ const ViewFormCheckout = ({ section }) => {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="address"
-            render={({ field }) => (
-              <FormItem>
-                <CustomLabelField
-                  label="Alamat"
-                  size={labelSize}
-                  color={labelColor}
-                />
-                <FormControl>
-                  <Textarea
-                    style={{
-                      border: `1px solid ${borderColor}`,
-                      backgroundColor: inputColor,
-                      fontSize: inputSize ? inputSize : "",
-                      color: textInputColor,
-                      borderRadius: rounded,
-                    }}
-                    className="placeholder:text-neutral-300"
-                    placeholder="Jl Perjuangan 11"
-                    {...field}
-                  />
-                </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="city"
-            render={({ field }) => (
-              <FormItem className="flex flex-col gap-1">
-                <FormLabel className="font-normal mt-2"></FormLabel>
-
-                <CustomLabelField
-                  label="Kota / Kecamatan"
-                  size={labelSize}
-                  color={labelColor}
-                />
-                <FormControl>
-                  <Popover open={open} onOpenChange={setOpen}>
-                    <PopoverTrigger asChild>
-                      <Button
-                        style={{
-                          border: `1px solid ${borderColor}`,
-                          fontSize: inputSize ? inputSize : "",
-                          color: textInputColor,
-                          borderRadius: rounded,
-                          backgroundColor: inputColor,
-                        }}
-                        variant="outline"
-                        role="combobox"
-                        aria-expanded={open}
-                        className="w-[200px] justify-between"
-                      >
-                        {value
-                          ? frameworks.find(
-                              (framework) => framework.value === value
-                            )?.label
-                          : "Select framework..."}
-                        <ChevronDown className="opacity-50" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent
-                      style={{
-                        border: `1px solid ${borderColor}`,
-                        borderRadius: rounded,
-                      }}
-                      className="w-[200px] p-0 overflow-hidden"
-                    >
-                      <Command>
-                        <CommandInput
-                          placeholder="Search framework..."
-                          className="h-9"
-                        />
-                        <CommandList>
-                          <CommandEmpty>No framework found.</CommandEmpty>
-                          <CommandGroup>
-                            {frameworks.map((framework) => (
-                              <CommandItem
-                                style={{
-                                  fontSize: inputSize ? inputSize : "",
-                                  color: textInputColor,
-                                  cursor: "pointer",
-                                }}
-                                key={framework.value}
-                                value={framework.value}
-                                onSelect={(currentValue) => {
-                                  setValue(
-                                    currentValue === value ? "" : currentValue
-                                  );
-                                  setOpen(false);
-                                }}
-                              >
-                                {framework.label}
-                                <Check
-                                  className={cn(
-                                    "ml-auto",
-                                    value === framework.value
-                                      ? "opacity-100"
-                                      : "opacity-0"
-                                  )}
-                                />
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {address?.isRequired && (
+            <ViewAddressField
+              address={address}
+              styles={section?.wrapperStyle}
+            />
+          )}
 
           {/* Custom Fields */}
           {contents.length > 0 &&
@@ -571,13 +482,29 @@ const ViewFormCheckout = ({ section }) => {
               );
             })}
 
-          <Shipping styles={section.wrapperStyle} />
+          {shipping?.isRequired && (
+            <ViewShipping styles={section.wrapperStyle} />
+          )}
 
           {section?.paymentMethod?.isRequired && (
             <PaymentMethod
               paymentMethod={section?.paymentMethod}
               styles={section.wrapperStyle}
             />
+          )}
+
+          {summary?.isRequired && products?.id && (
+            <ViewSummaryOrder
+              summary={summary}
+              products={products}
+              styles={section.wrapperStyle}
+            />
+          )}
+
+          {form.formState.errors?.products && (
+            <p className="text-red-500">
+              {form.formState.errors?.products?.message}
+            </p>
           )}
 
           <Button
