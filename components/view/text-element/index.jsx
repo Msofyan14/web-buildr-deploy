@@ -1,7 +1,8 @@
+import { AnimatedWrapper } from "@/components/AnimatedWrapper";
 import { useSanitizedFonts } from "@/hooks/useSanitizedFonts";
 
 const ViewTextElement = ({ section }) => {
-  const { contents } = section || {};
+  const { contents, animation } = section || {};
 
   const SanitizedContent = ({ html }) => {
     const sanitized = useSanitizedFonts(html);
@@ -12,9 +13,9 @@ const ViewTextElement = ({ section }) => {
     <div className="">
       {contents.map((content) => {
         return (
-          <div key={content.id}>
+          <AnimatedWrapper key={content.id} animationData={animation}>
             <SanitizedContent html={content.text} />
-          </div>
+          </AnimatedWrapper>
         );
       })}
     </div>

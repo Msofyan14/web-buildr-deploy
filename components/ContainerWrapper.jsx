@@ -139,7 +139,7 @@ const ContainerWrapper = ({
         position: "relative",
         maxWidth: isFullWidth ? "100%" : maxWidthPage,
       }}
-      className="w-full   mx-auto overflow-x-hidden"
+      className="w-full   mx-auto overflow-hidden"
     >
       {bgType === "image" ? (
         <div style={stylesBg.backgroundImgStyle}></div>

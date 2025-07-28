@@ -1,10 +1,11 @@
+import { AnimatedWrapper } from "@/components/AnimatedWrapper";
 import { useActionClickTarget } from "@/hooks/useActionClickTarget";
 import { useSanitizedFonts } from "@/hooks/useSanitizedFonts";
 import Image from "next/image";
 import { useMemo } from "react";
 
 const ViewListImages = ({ section }) => {
-  const { isAddHeader, header, contents } = section;
+  const { isAddHeader, header, contents, animationHeader } = section;
   const { column, aspectRatio, rounded, objectView, gap } =
     section?.wrapperStyle || {};
 
@@ -47,7 +48,11 @@ const ViewListImages = ({ section }) => {
 
   return (
     <div className="relative">
-      {isAddHeader && <div>{sanitizedContent}</div>}
+      {isAddHeader && (
+        <AnimatedWrapper animationData={animationHeader}>
+          {sanitizedContent}
+        </AnimatedWrapper>
+      )}
 
       <div
         style={{

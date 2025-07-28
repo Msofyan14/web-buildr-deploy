@@ -1,5 +1,4 @@
-// import useAnimatedVisibility from "@/hooks/useAnimatedVisibility";
-
+import { AnimatedWrapper } from "@/components/AnimatedWrapper";
 import CustomButton from "@/components/CustomButton";
 import { useActionClickTarget } from "@/hooks/useActionClickTarget";
 import { useSanitizedFonts } from "@/hooks/useSanitizedFonts";
@@ -18,15 +17,6 @@ const ViewHeroSection = ({ section, buildContainerStyle }) => {
   } = section.wrapperStyle;
 
   const currentGlobalOptions = buildContainerStyle;
-
-  //   const { elementRef, getClassName, duration } =
-  //     useAnimatedVisibility(animation);
-
-  //   const {
-  //     elementRef: elementRefContent,
-  //     getClassName: getClassNameContent,
-  //     duration: durationContent,
-  //   } = useAnimatedVisibility(animationText);
 
   const { onActionClickTarget } = useActionClickTarget();
 
@@ -47,46 +37,42 @@ const ViewHeroSection = ({ section, buildContainerStyle }) => {
               >
                 {content.imagePosition === "left" ? (
                   <>
-                    <div
-                      data-gjs-selectable="true"
-                      //   ref={elementRef}
-                      //   className={`${shadow} ${getClassName()}`}
-                      className={`${shadow}  relative `}
-                      style={{
-                        transform: `rotate(${content.rotation}deg)`,
-                        // "--animation-duration": `${duration}s`,
-                        aspectRatio: 5 / 3,
-                        width: content.width,
-                      }}
-                      key={content.id}
-                    >
-                      <Image
-                        src={content?.image}
-                        alt={content?.alt || ""}
-                        fill
-                        className={`object-cover rounded ${
-                          content?.target?.options?.type ? "cursor-pointer" : ""
-                        }`}
-                        onClick={() => onActionClickTarget(content?.target)}
-                        placeholder="blur"
-                        blurDataURL={content?.image}
-                      />
-                    </div>
+                    <AnimatedWrapper animationData={animation}>
+                      <div
+                        data-gjs-selectable="true"
+                        className={`${shadow}  relative `}
+                        style={{
+                          transform: `rotate(${content.rotation}deg)`,
+
+                          aspectRatio: 5 / 3,
+                          width: content.width,
+                        }}
+                        key={content.id}
+                      >
+                        <Image
+                          src={content?.image}
+                          alt={content?.alt || ""}
+                          fill
+                          className={`object-cover rounded ${
+                            content?.target?.options?.type
+                              ? "cursor-pointer"
+                              : ""
+                          }`}
+                          onClick={() => onActionClickTarget(content?.target)}
+                          placeholder="blur"
+                          blurDataURL={content?.image}
+                        />
+                      </div>
+                    </AnimatedWrapper>
 
                     <div className=" p-3 w-full ">
-                      <div
-                        // ref={elementRefContent}
-                        className={`mb-3 min-w-full break-all `}
-
-                        //   className={`${getClassNameContent()}  mb-3 min-w-full break-all `}
-                        // style={{
-                        //   "--animation-duration": `${durationContent}s`,
-                        // }}
-                      >
-                        <div>
-                          <SanitizedContent html={content.textBanner} />
+                      <AnimatedWrapper animationData={animationText}>
+                        <div className={`mb-3 min-w-full break-all `}>
+                          <div>
+                            <SanitizedContent html={content.textBanner} />
+                          </div>
                         </div>
-                      </div>
+                      </AnimatedWrapper>
 
                       {withButton && (
                         <div
@@ -109,18 +95,13 @@ const ViewHeroSection = ({ section, buildContainerStyle }) => {
                 ) : (
                   <>
                     <div className="p-3 w-full">
-                      <div
-                        // ref={elementRefContent}
-                        className={`mb-3 `}
-                        // className={`${getClassNameContent()} mb-3 `}
-                        // style={{
-                        //   "--animation-duration": `${durationContent}s`,
-                        // }}
-                      >
-                        <div>
-                          <SanitizedContent html={content.textBanner} />
+                      <AnimatedWrapper animationData={animationText}>
+                        <div className={`mb-3 `}>
+                          <div>
+                            <SanitizedContent html={content.textBanner} />
+                          </div>
                         </div>
-                      </div>
+                      </AnimatedWrapper>
 
                       {withButton && (
                         <div
@@ -140,30 +121,31 @@ const ViewHeroSection = ({ section, buildContainerStyle }) => {
                       )}
                     </div>
 
-                    <div
-                      //   ref={elementRef}
-                      className={`${shadow} relative `}
-                      // className={`${shadow} ${getClassName()}`}
-                      style={{
-                        transform: `rotate(${content.rotation}deg)`,
-                        // "--animation-duration": `${duration}s`,
-                        aspectRatio: 5 / 3,
-                        width: content.width,
-                      }}
-                      key={content.id}
-                    >
-                      <Image
-                        src={content?.image}
-                        alt={content?.alt || ""}
-                        fill
-                        className={`object-cover rounded ${
-                          content?.target?.options?.type ? "cursor-pointer" : ""
-                        }`}
-                        onClick={() => onActionClickTarget(content?.target)}
-                        placeholder="blur"
-                        blurDataURL={content?.image}
-                      />
-                    </div>
+                    <AnimatedWrapper animationData={animation}>
+                      <div
+                        className={`${shadow} relative `}
+                        style={{
+                          transform: `rotate(${content.rotation}deg)`,
+                          aspectRatio: 5 / 3,
+                          width: content.width,
+                        }}
+                        key={content.id}
+                      >
+                        <Image
+                          src={content?.image}
+                          alt={content?.alt || ""}
+                          fill
+                          className={`object-cover rounded ${
+                            content?.target?.options?.type
+                              ? "cursor-pointer"
+                              : ""
+                          }`}
+                          onClick={() => onActionClickTarget(content?.target)}
+                          placeholder="blur"
+                          blurDataURL={content?.image}
+                        />
+                      </div>
+                    </AnimatedWrapper>
                   </>
                 )}
               </div>
@@ -184,18 +166,11 @@ const ViewHeroSection = ({ section, buildContainerStyle }) => {
                     maxWidth: "100%",
                   }}
                 >
-                  <div
-                    // ref={elementRefContent}
-                    className={` mb-3 `}
-                    //  className={`${getClassNameContent()} mb-3 `}
-                    // style={{
-                    //   "--animation-duration": `${durationContent}s`,
-                    // }}
-                  >
-                    <div>
+                  <AnimatedWrapper animationData={animationText}>
+                    <div className={` mb-3 `}>
                       <SanitizedContent html={content.textBanner} />
                     </div>
-                  </div>
+                  </AnimatedWrapper>
 
                   {withButton && (
                     <div

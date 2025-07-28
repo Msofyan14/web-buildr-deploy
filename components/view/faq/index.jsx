@@ -1,10 +1,11 @@
+import { AnimatedWrapper } from "@/components/AnimatedWrapper";
 import { useGoogleFont } from "@/hooks/useGoogleFont";
 import { useSanitizedFonts } from "@/hooks/useSanitizedFonts";
 import { ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 const ViewFAQ = ({ section }) => {
-  const { isAddHeader, header, contents } = section;
+  const { isAddHeader, header, contents, animationHeader } = section;
   const {
     colorTitle,
     fontWeight,
@@ -66,7 +67,11 @@ const ViewFAQ = ({ section }) => {
 
   return (
     <div className="relative">
-      {isAddHeader && <div>{sanitizedContent}</div>}
+      {isAddHeader && (
+        <AnimatedWrapper animationData={animationHeader}>
+          {sanitizedContent}
+        </AnimatedWrapper>
+      )}
 
       {variant === "basic" && (
         <div className="flex flex-col p-5 relative ">

@@ -4,9 +4,10 @@ import Image from "next/image";
 import { useSanitizedFonts } from "@/hooks/useSanitizedFonts";
 import { useGoogleFont } from "@/hooks/useGoogleFont";
 import { cn } from "@/lib/utils";
+import { AnimatedWrapper } from "@/components/AnimatedWrapper";
 
 const ViewContentShowcase = ({ section }) => {
-  const { isAddHeader, header, contents } = section;
+  const { isAddHeader, header, contents, animationHeader } = section;
   const {
     column,
     aspectRatio,
@@ -68,7 +69,11 @@ const ViewContentShowcase = ({ section }) => {
 
   return (
     <div className="relative">
-      {isAddHeader && <div>{sanitizedContent}</div>}
+      {isAddHeader && (
+        <AnimatedWrapper animationData={animationHeader}>
+          {sanitizedContent}
+        </AnimatedWrapper>
+      )}
 
       <div
         className={`relative items-stretch

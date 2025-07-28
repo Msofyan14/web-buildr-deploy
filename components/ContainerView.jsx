@@ -32,7 +32,7 @@ const ContainerView = ({
         isNavbarComponent && navbarPosition === "sticky"
           ? "sticky top-0"
           : "relative",
-        isNavbarComponent ? "" : "overflow-x-hidden"
+        isNavbarComponent ? "" : "overflow-hidden"
       )}
       style={{
         borderRadius: rounded,

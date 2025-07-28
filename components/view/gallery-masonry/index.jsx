@@ -5,6 +5,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import { MdClose } from "react-icons/md";
 import { useSanitizedFonts } from "@/hooks/useSanitizedFonts";
+import { AnimatedWrapper } from "@/components/AnimatedWrapper";
 
 const ViewImageDetail = ({ children, isOpen, onClose }) => {
   const [showModal, setShowModal] = useState(isOpen);
@@ -198,13 +199,17 @@ const GalleryMasonry = ({ data, buildContainerStyle }) => {
 };
 
 const ViewGalleryMasonry = ({ section, buildContainerStyle }) => {
-  const { isAddHeader, header, contents } = section;
+  const { isAddHeader, header, contents, animationHeader } = section;
 
   const sanitizedContent = useSanitizedFonts(header);
 
   return (
     <div className="relative">
-      {isAddHeader && <div>{sanitizedContent}</div>}
+      {isAddHeader && (
+        <AnimatedWrapper animationData={animationHeader}>
+          {sanitizedContent}
+        </AnimatedWrapper>
+      )}
 
       <GalleryMasonry
         data={contents}

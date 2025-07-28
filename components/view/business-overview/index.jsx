@@ -3,6 +3,7 @@ import { useMotionValue, useSpring } from "framer-motion";
 import { useState } from "react";
 import { useSanitizedFonts } from "@/hooks/useSanitizedFonts";
 import { useGoogleFont } from "@/hooks/useGoogleFont";
+import { AnimatedWrapper } from "@/components/AnimatedWrapper";
 
 const CountUp = ({
   to,
@@ -154,7 +155,7 @@ const ViewBusinessOverview = ({ section }) => {
     isItalicOverview,
   } = section.wrapperStyle;
 
-  const { isAddHeader, header, contents } = section;
+  const { isAddHeader, header, contents, animationHeader } = section;
 
   const sanitizedContent = useSanitizedFonts(header);
   const selectedFontHeader = useGoogleFont(fontFamily);
@@ -162,7 +163,11 @@ const ViewBusinessOverview = ({ section }) => {
 
   return (
     <div className="relative">
-      {isAddHeader && <div>{sanitizedContent}</div>}
+      {isAddHeader && (
+        <AnimatedWrapper animationData={animationHeader}>
+          {sanitizedContent}
+        </AnimatedWrapper>
+      )}
 
       <div
         style={{
