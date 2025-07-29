@@ -31,6 +31,7 @@ import ViewTextElement from "./view/text-element";
 import ViewVideo from "./view/video";
 import ViewVideoText from "./view/video-text-banner";
 import ViewPopup from "./ViewPopup";
+import ViewTypingText from "./view/ typing-text";
 
 export const viewComponentsRender = {
   "content-showcase": ViewContentShowcase,
@@ -64,6 +65,7 @@ export const viewComponentsRender = {
   "fuzzy-text": ViewFuzzyText,
   "blur-text": ViewBlurText,
   "split-text": ViewSplitText,
+  "typing-text": ViewTypingText,
   navbar: ViewNavbar,
   "custom-maps": ViewMaps,
   "container-wrapper": ContainerWrapper,

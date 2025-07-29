@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useSanitizedFonts } from "@/hooks/useSanitizedFonts";
 import { useGoogleFont } from "@/hooks/useGoogleFont";
 import { AnimatedWrapper } from "@/components/AnimatedWrapper";
+import { cn } from "@/lib/utils";
 
 const CountUp = ({
   to,
@@ -161,6 +162,15 @@ const ViewBusinessOverview = ({ section }) => {
   const selectedFontHeader = useGoogleFont(fontFamily);
   const selectedFontOverview = useGoogleFont(fontFamilyOverview);
 
+  const gapMap = {
+    close: "md:gap-x-10",
+    medium: "md:gap-x-20",
+    far: "md:gap-x-32",
+    veryFar: "md:gap-x-48",
+  };
+
+  const gapClass = gapMap[distance] || "md:gap-0";
+
   return (
     <div className="relative">
       {isAddHeader && (
@@ -170,10 +180,11 @@ const ViewBusinessOverview = ({ section }) => {
       )}
 
       <div
-        style={{
-          gap: distance,
-        }}
-        className={`flex flex-wrap  ${textAligment}  relative px-5`}
+        className={cn(
+          "flex flex-col md:flex-row flex-wrap  relative gap-10 p-5 ",
+          textAligment,
+          gapClass
+        )}
       >
         {contents.map((content) => {
           const { rangeValue, from, overview, symbol } = content;
@@ -213,9 +224,9 @@ const ViewBusinessOverview = ({ section }) => {
               </div>
 
               <p
-                className={`break-all ${isItalicOverview && "italic"} ${
-                  selectedFontOverview.className
-                }`}
+                className={`break-all max-w-[200px] ${
+                  isItalicOverview && "italic"
+                } ${selectedFontOverview.className}`}
                 style={{
                   fontWeight: fontWeightOverview,
                   color: colorOverview,
