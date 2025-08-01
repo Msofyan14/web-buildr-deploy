@@ -9,11 +9,16 @@ const ViewSummaryOrder = ({ summary, products, styles }) => {
 
   const { labelColor, borderColor, rounded } = styles;
 
+  const calculateProductsPrice = products.reduce(
+    (acc, current) => acc + current.price * current.quantity,
+    0
+  );
+
   const calculateTotalPrice = () => {
     if (!courierPrice) {
-      return Number(products?.price);
+      return Number(calculateProductsPrice);
     } else {
-      return Number(courierPrice) + Number(products?.price);
+      return Number(courierPrice) + Number(calculateProductsPrice);
     }
   };
 
@@ -29,10 +34,16 @@ const ViewSummaryOrder = ({ summary, products, styles }) => {
         <CustomLabelField label={summary?.label} size={18} color={labelColor} />
       )}
 
-      <div className="flex items-center justify-between ">
-        <p className="">{products?.name}</p>
-        <p className="">{formatRupiah(products?.price)}</p>
-      </div>
+      {products.map((product) => {
+        const totalPriceProduct = product?.price * product.quantity;
+
+        return (
+          <div key={product.id} className="flex items-center justify-between ">
+            <p className="">{product?.name}</p>
+            <p className="">{formatRupiah(totalPriceProduct)}</p>
+          </div>
+        );
+      })}
 
       <div className="flex items-center justify-between ">
         <p className="">Ongkos Kirim</p>

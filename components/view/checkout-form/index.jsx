@@ -34,6 +34,7 @@ import PaymentMethod from "./_components/payment-method";
 import ViewSummaryOrder from "./_components/ViewSummaryOrder";
 import ViewShipping from "./_components/ViewShipping";
 import { ViewAddressField } from "./_components/ViewAddressField";
+import { ViewProductsDetail } from "./_components/ViewProductsDetail";
 
 const generateCustomFieldSchema = (contents) => {
   if (!contents || contents.length === 0) {
@@ -88,17 +89,15 @@ const generateCustomFieldSchema = (contents) => {
 };
 
 const ViewFormCheckout = ({ section }) => {
-  const {
-    contents,
-    submitEvent,
-    paymentMethod,
-    products,
-    shipping,
-    address,
-    summary,
-  } = section;
+  const { contents, submitEvent, paymentMethod, shipping, address, summary } =
+    section;
 
   const { isRequired, isCod, isBankTransfer, isEpayment } = paymentMethod || {};
+
+  const { selectedProducts, settings: productSettings } =
+    section.products || {};
+
+  const { isShowProducts } = productSettings || {};
 
   const router = useRouter();
 
@@ -140,6 +139,17 @@ const ViewFormCheckout = ({ section }) => {
 
     return schema;
   };
+
+  const productsSchema = z
+    .array(
+      z.object({
+        id: z.string({ required_error: "Product ID is required" }),
+        name: z.string({ required_error: "Product name is required" }),
+        price: z.coerce.number({ required_error: "Product price is required" }),
+        quantity: z.coerce.number(),
+      })
+    )
+    .min(1, { message: "Please Select Products" });
 
   const createCourierSchema = ({ isRequired }) => {
     if (!isRequired) {
@@ -212,14 +222,7 @@ const ViewFormCheckout = ({ section }) => {
     bank: z.any().optional(),
     courier: createCourierSchema({ isRequired: shipping?.isRequired }),
     customFields: z.lazy(() => generateCustomFieldSchema(contents)),
-    products: z.object(
-      {
-        id: z.string(),
-        name: z.string(),
-        price: z.string(),
-      },
-      { message: "Products Required" }
-    ),
+    products: productsSchema,
   });
 
   const {
@@ -263,8 +266,11 @@ const ViewFormCheckout = ({ section }) => {
         price: "",
       },
       customFields: [],
+      products: [],
     },
   });
+
+  const watchedProducts = form.watch("products");
 
   useEffect(() => {
     if (contents.length > 0) {
@@ -311,14 +317,6 @@ const ViewFormCheckout = ({ section }) => {
       );
     }
   };
-
-  useEffect(() => {
-    if (Object.keys(products).length > 0) {
-      setTimeout(() => {
-        form.setValue("products", products);
-      }, 0);
-    }
-  }, [form, form.setValue, products]);
 
   console.log("ERROR", form.formState.errors);
 
@@ -482,6 +480,14 @@ const ViewFormCheckout = ({ section }) => {
               );
             })}
 
+          {isShowProducts && (
+            <ViewProductsDetail
+              products={selectedProducts}
+              settings={productSettings}
+              styles={section.wrapperStyle}
+            />
+          )}
+
           {shipping?.isRequired && (
             <ViewShipping styles={section.wrapperStyle} />
           )}
@@ -493,10 +499,10 @@ const ViewFormCheckout = ({ section }) => {
             />
           )}
 
-          {summary?.isRequired && products?.id && (
+          {summary?.isRequired && watchedProducts?.length > 0 && (
             <ViewSummaryOrder
               summary={summary}
-              products={products}
+              products={watchedProducts}
               styles={section.wrapperStyle}
             />
           )}

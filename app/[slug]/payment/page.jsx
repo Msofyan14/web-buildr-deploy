@@ -18,13 +18,10 @@ import Image from "next/image";
 import { formatRupiah } from "@/lib/utils";
 
 const renderHtmlWithReact = (html, variables) => {
-  console.log("🚀 ~ renderHtmlWithReact ~ html:", html);
   return parse(html, {
     replace: (domNode) => {
       if (domNode.type === "text") {
         const text = domNode.data;
-
-        // Regex untuk mendeteksi semua {{key}}
         const matches = text.match(/{{\s*[\w.]+\s*}}/g);
 
         if (matches) {
@@ -33,8 +30,24 @@ const renderHtmlWithReact = (html, variables) => {
             if (match) {
               const key = match[1];
               const value = variables[key];
+
+              if (Array.isArray(value)) {
+                // Jika array, tampilkan sebagai <ul><li>...</li></ul> jika lebih dari 1
+                if (value.length === 1) {
+                  return <Fragment key={index}>{value[0]}</Fragment>;
+                }
+                return (
+                  <span key={index} className="list-disc pl-5 ">
+                    {value.map((item, i) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                  </span>
+                );
+              }
+
               return <Fragment key={index}>{value}</Fragment>;
             }
+
             return part;
           });
 
@@ -182,9 +195,26 @@ const PaymentInstruction = () => {
 
   const { chatTemplate = "", products, paymentMethod } = data;
 
+  const calculateProductsPrice = products?.reduce(
+    (acc, current) => acc + current.price * current.quantity,
+    0
+  );
+
+  const calculateTotalPrice = () => {
+    if (!data?.courier?.price) {
+      return Number(calculateProductsPrice);
+    } else {
+      return Number(data?.courier?.price) + Number(calculateProductsPrice);
+    }
+  };
+
+  const productsName = products?.map(
+    (product) => `${product.name} - ${product.quantity}pcs`
+  );
+
   const variableReplacement = {
-    product_name: products?.name || "",
-    total_price: products?.price ? formatRupiah(products?.price) : "",
+    product_name: productsName || "",
+    total_price: formatRupiah(calculateTotalPrice()) || "",
     payment_options: <PaymentOptions paymentMethod={paymentMethod} />,
     bank_transfer_confirmation: (
       <span>
